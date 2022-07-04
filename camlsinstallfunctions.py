@@ -434,9 +434,19 @@ def install_camels():
                                   "%USERPROFILE%/CAMELS"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, text=True)
+    print('Installing module for PID controller')
+    subprocess.run(["powershell", "wsl", "cd ~/EPICS/epics-support/ `&`& "
+                                         "git clone https://github.com/epics-modules/std.git"],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                   shell=True, text=True)
+
 
 def install_pyenv():
     print('Install pyenv')
+    print('Setup correct line endings so that all are in UNIX format')
+    subprocess.run(["powershell", "git config --global core.eol lf;git config --global core.autocrlf input"],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                   shell=True, text=True)
     print('Clone pyenv for windows from Github')
     subprocess.run(["powershell", "cd $HOME; git clone https://github.com/pyenv-win/pyenv-win.git"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
@@ -449,7 +459,7 @@ def install_pyenv():
         if r"See 'git" not in git_install_test:
             print('Git does not seem to be installed. Please install!')
             sys.exit(1)
-        
+
     print('Create .pyenv folder in the $HOME directory')
     print('Copy pyenv-win folder and .version file to .pyenv from the cloned folder')
     subprocess.run(["powershell", "mkdir $HOME/.pyenv; Copy-Item $HOME/pyenv-win/pyenv-win "
@@ -484,7 +494,9 @@ def install_pyenv():
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, text=True)
 
+
 def setup_python_environment():
+
     print('Installing python version 3.9.6')
     subprocess.run(["powershell", f"cd {os.path.expanduser('~')};"
                     "pyenv install 3.9.6"],
