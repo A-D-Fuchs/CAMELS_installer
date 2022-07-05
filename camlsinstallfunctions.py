@@ -372,16 +372,16 @@ def install_epics_base(password_ubuntu_input):
 
     wsl_path: str = os.path.join(r"\\wsl$\Ubuntu", '')
     print("setting up EPICS environment...")
-    with open(os.path.join(wsl_path, '\home\epics\.bashrc'), "r+") as profile:
+    with open(os.path.join(wsl_path, '\home\epics\.bashrc'), "rb+") as profile:
         epics_env = ("\n\nexport EPICS_BASE=${HOME}/EPICS/epics-base\nexport "
         "EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)\nexport "
         "PATH=${EPICS_BASE}/bin/${EPICS_HOST_A}RCH}:${PATH}\n")
         content = profile.read()
-        if "EPICS_BASE" in content:
+        if ("EPICS_BASE").encode('UTF-8') in content:
             print('EPICS BASE already added to path')
         else:
             print('Setting EPICS environment variables in .bashrc')
-            profile.write(epics_env)
+            profile.write(epics_env.encode('UTF-8'))
             profile.truncate()
 
     print('Cloning support modules')
