@@ -67,7 +67,7 @@ def sanity_check_epics_installed():
      0: if EPICS is not installed
      
      """ 
-     if 'EPICS' in (subprocess.run([r'wsl','ls /home/epics'],
+     if 'EPICS' in (subprocess.run(['powershell','wsl','ls /home/epics'],
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                     stdin=subprocess.PIPE, shell=True, text=True)).stdout:
          print('EPICS installed already.')
@@ -246,29 +246,29 @@ def ubuntu_installer(password_ubuntu_input):
                    stdin=subprocess.PIPE, shell=True, text=True)
 
     # sets the root password to root
-    subprocess.run(["wsl", "echo", "root:root", "|", "chpasswd"],
+    subprocess.run(['powershell',"wsl", "echo", "root:root", "|", "chpasswd"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                    stdin=subprocess.PIPE, shell=True, text=True)
 
     print('Running regex match for user name')
-    if re.search('.*no such user.*', ((subprocess.run(["wsl", "id", "-u", "epics"],
+    if re.search('.*no such user.*', ((subprocess.run(['powershell',"wsl", "id", "-u", "epics"],
                                                       text=True, encoding=' utf-8',
                                                       stdout=subprocess.PIPE,
                                                       stderr=subprocess.PIPE,
                                                       stdin=subprocess.PIPE)).stderr)):
         print('creating user: "epics" in fresh install')
         print(r'Adding user')
-        subprocess.run(["wsl", "adduser", "epics"], text=True, 
+        subprocess.run(['powershell',"wsl", "adduser", "epics"], text=True,
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE, stdin=subprocess.PIPE)
         print('Changing password')
-        subprocess.run(["wsl", "echo", f"epics:{password_ubuntu_input}", 
+        subprocess.run(['powershell',"wsl", "echo", f"epics:{password_ubuntu_input}",
                         "|", "chpasswd"],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
                        stdin=subprocess.PIPE,
                        text=True)
         print('Adding user to sudo group')
-        subprocess.run(["wsl", "usermod", "-aG", "sudo", "epics"], 
+        subprocess.run(['powershell',"wsl", "usermod", "-aG", "sudo", "epics"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
         print('Setting user as default')
@@ -321,11 +321,11 @@ def install_epics_base(password_ubuntu_input):
     CORES = os.cpu_count()
 
     print('Updating apt')
-    subprocess.run(["wsl", "sudo", "-S", "<<<", f"{password_ubuntu_input}", "apt", "update"],
+    subprocess.run(['powershell',"wsl", "sudo", "-S", "`<`<`<", f"{password_ubuntu_input}", "apt", "update"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     print('Upgrading apt')
-    subprocess.run(["wsl", "sudo", "-S", "<<<", f"{password_ubuntu_input}",
+    subprocess.run(['powershell',"wsl", "sudo", "-S", "`<`<`<", f"{password_ubuntu_input}",
                     "apt", "dist-upgrade", "-y"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
