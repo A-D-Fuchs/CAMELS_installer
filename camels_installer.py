@@ -87,8 +87,6 @@ def full_sanity_check(camels_install_path,):
         setup_python_environment()
     
     run_camels()
-#test to check git push
-#second test
     
 
     
