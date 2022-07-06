@@ -123,8 +123,8 @@ class Ui_InstallerWindow(object):
         self.label_3.setText(_translate("InstallerWindow", "Path to CAMELS:"))
         self.checkBox_python.setText(_translate("InstallerWindow", "Install Python Environment for CAMELS"))
         self.checkBox_camels.setText(_translate("InstallerWindow", "Install CAMELS"))
-        self.checkBox_epics.setText(_translate("InstallerWindow", "Install EPICS in WSL"))
-        self.checkBox_wsl.setText(_translate("InstallerWindow", "Install WSL"))
+        self.checkBox_epics.setText(_translate("InstallerWindow", "Install EPICS in Ubuntu WSL"))
+        self.checkBox_wsl.setText(_translate("InstallerWindow", "Install Ubuntu WSL"))
         self.radioButton_full.setText(_translate("InstallerWindow", "Full Install (recommended)"))
         self.radioButton_custom.setText(_translate("InstallerWindow", "Custom Install"))
 from utility.path_button_edit import Path_Button_Edit
