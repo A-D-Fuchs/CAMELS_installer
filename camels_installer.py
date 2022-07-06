@@ -75,9 +75,9 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
         if self.radioButton_custom.isChecked():
             camels_install_path = self.pathButton_CAMELS.get_path()
             wsl_install_bool = self.checkBox_wsl.isChecked()
-            epics_install_bool = self.checkBox_epics
-            camels_install_bool = self.checkBox_camels
-            pythonenv_install_bool = self.checkBox_python
+            epics_install_bool = self.checkBox_epics.isChecked()
+            camels_install_bool = self.checkBox_camels.isChecked()
+            pythonenv_install_bool = self.checkBox_python.isChecked()
             self.install_thread = InstallThread(camels_install_path, wsl_install_bool,
                                                 epics_install_bool, camels_install_bool,
                                                 pythonenv_install_bool,)
@@ -101,24 +101,35 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
                           checkbox_install_epics, checkbox_install_camels,
                           checkbox_install_pythonenv,
                       progress_signal=None, info_signal=None):
+    # print(f'{checkbox_install_pythonenv=},{checkbox_install_wsl=},{checkbox_install_epics=},{checkbox_install_camels=},')
+    # check to see if install script is in the windows startup folder and removes it.
+    if os.path.exists(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+                                                            "\Startup\camels_installer.exe")):
+        os.remove(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+                                                            "\Startup\camels_installer.exe"))
+
     if checkbox_install_wsl:
+        print('checkboxinstallwsl true')
         if sanity_check_wsl_enabled() == 0:
-            enable_wsl()
+            enable_wsl(sys.argv[0])
         else:
             print('Passed WSL enabled check')
             pass
 
-    if sanity_check_ubuntu_installed() == 0:
-        password_ubuntu_input = set_ubuntu_user_password()
-        ubuntu_installer(password_ubuntu_input)
-    else:
-        print('Passed ubuntu installed check')
-        pass
+        if sanity_check_ubuntu_installed() == 0:
+            password_ubuntu_input = set_ubuntu_user_password()
+            ubuntu_installer(password_ubuntu_input)
+        else:
+            print('Passed ubuntu installed check')
+            pass
     if progress_signal:
         progress_signal.emit(25)
     if checkbox_install_epics:
         if sanity_check_epics_installed() == 0:
-            password_ubuntu_input = set_ubuntu_user_password()
+            if password_ubuntu_input:
+                pass
+            else:
+                password_ubuntu_input = set_ubuntu_user_password()
             install_epics_base(password_ubuntu_input)
         else:
             print('Passed EPICS installed check')
@@ -136,12 +147,13 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
         else:
             print('Passed pyenv installed check')
             setup_python_environment()
-    
+
     run_camels()
 
 
 if __name__ == '__main__':
-    #full_sanity_check(os.path.expanduser('~'))
+    print(sys.argv[0])
+    # full_sanity_check(os.path.expanduser('~'))
     app = QCoreApplication.instance()
     if app is None:
         app = QApplication(sys.argv)

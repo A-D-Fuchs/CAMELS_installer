@@ -121,8 +121,12 @@ def sanity_check_pyenv_installed():
     return installed   
     
 
-
-def enable_wsl():        
+def enable_wsl(exe_path):
+    windows_startup_path = os.path.join(os.path.expanduser("~"), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
+    subprocess.run(['powershell', fr'Copy-Item "{exe_path}\camels_installer.exe" -Destination '
+                                 fr'"{windows_startup_path}"'],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                   stdin=subprocess.PIPE, shell=True, text=True)
     subprocess.run(["powershell", "Start-Process", "powershell",
                     r"'dism.exe /online /enable-feature "
                     r"/featurename:Microsoft-Windows-Subsystem-Linux "
@@ -246,7 +250,7 @@ def ubuntu_installer(password_ubuntu_input):
                    stdin=subprocess.PIPE, shell=True, text=True)
 
     # sets the root password to root
-    subprocess.run(['powershell',"wsl", "echo", "root:root", "|", "chpasswd"],
+    subprocess.run(["powershell","wsl", "chpasswd `<`<`< root:root"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                    stdin=subprocess.PIPE, shell=True, text=True)
 
@@ -262,9 +266,8 @@ def ubuntu_installer(password_ubuntu_input):
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE, stdin=subprocess.PIPE)
         print('Changing password')
-        subprocess.run(['powershell',"wsl", "echo", f"epics:{password_ubuntu_input}",
-                        "|", "chpasswd"],
-                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
+        subprocess.run(["powershell","wsl","chpasswd `<`<`<" f"epics:{password_ubuntu_input}"],
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                        stdin=subprocess.PIPE,
                        text=True)
         print('Adding user to sudo group')
