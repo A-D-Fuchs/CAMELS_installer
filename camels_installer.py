@@ -62,6 +62,17 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
 
         self.groupBox_progress.setHidden(True)
         self.resize(self.minimumSizeHint())
+        if len(sys.argv) > 1:
+            if sys.argv[1] == 'rerun':
+                if 'custom' in sys.argv:
+                    self.radioButton_custom.setChecked(True)
+                    if 'wsl' in sys.argv:
+                        self.checkBox_wsl.setChecked(True)
+
+                        ### MISSING checkBox values !!! ###
+
+                    self.pathButton_CAMELS.set_path(sys.argv[-1])
+                self.start_install()
 
     def start_install(self):
         if self.radioButton_full.isChecked():
@@ -116,7 +127,11 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
         print('checkboxinstallwsl true')
         if sanity_check_wsl_enabled() == 0:
             print(sys.argv[0])
-            enable_wsl(sys.argv[0])
+            enable_wsl(sys.argv[0],
+                       checkbox_install_wsl,
+                       checkbox_install_epics,
+                       checkbox_install_camels,
+                       checkbox_install_pythonenv,)
         else:
             print('Passed WSL enabled check')
             pass

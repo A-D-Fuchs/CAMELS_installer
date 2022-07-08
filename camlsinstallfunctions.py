@@ -122,11 +122,13 @@ def sanity_check_pyenv_installed():
     return installed   
     
 
-def enable_wsl(exe_path):
+def enable_wsl(exe_path,checkbox_install_wsl, checkbox_install_epics,
+               checkbox_install_camels, checkbox_install_pythonenv,):
     windows_startup_path = os.path.join(os.path.expanduser("~"),
                                         "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
     path_of_exe = sys.argv[0]
     path_of_exe = r'C:\Users\fulapuser\CAMELS_installer\dist\camels_installer.exe'
+    total_command = path_of_exe + f' {checkbox_install_wsl} {checkbox_install_epics} {checkbox_install_camels} {checkbox_install_pythonenv} '
     subprocess.run(['powershell', fr'new-item -path "{windows_startup_path}" -name "camels_exe_path.txt" '
                     f'-type "file" -value "{path_of_exe}"'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
