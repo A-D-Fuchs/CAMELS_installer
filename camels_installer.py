@@ -104,13 +104,18 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
     # print(f'{checkbox_install_pythonenv=},{checkbox_install_wsl=},{checkbox_install_epics=},{checkbox_install_camels=},')
     # check to see if install script is in the windows startup folder and removes it.
     if os.path.exists(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
-                                                            "\Startup\camels_installer.exe")):
+                                                            r"\Startup\rerun_camels_installer.exe")):
         os.remove(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
-                                                            "\Startup\camels_installer.exe"))
+                                                            r"\Startup\rerun_camels_installer.exe"))
+    if os.path.exists(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+                                                            "\Startup\camels_exe_path.txt")):
+        os.remove(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+                                                            "\Startup\camels_exe_path.txt"))
 
     if checkbox_install_wsl:
         print('checkboxinstallwsl true')
         if sanity_check_wsl_enabled() == 0:
+            print(sys.argv[0])
             enable_wsl(sys.argv[0])
         else:
             print('Passed WSL enabled check')

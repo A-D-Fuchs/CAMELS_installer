@@ -2,6 +2,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import tkinter.simpledialog
 import tkinter.messagebox
 
@@ -122,11 +123,19 @@ def sanity_check_pyenv_installed():
     
 
 def enable_wsl(exe_path):
-    windows_startup_path = os.path.join(os.path.expanduser("~"), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
-    subprocess.run(['powershell', fr'Copy-Item "{exe_path}\camels_installer.exe" -Destination '
+    windows_startup_path = os.path.join(os.path.expanduser("~"),
+                                        "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
+    path_of_exe = sys.argv[0]
+    path_of_exe = r'C:\Users\fulapuser\CAMELS_installer\dist\camels_installer.exe'
+    subprocess.run(['powershell', fr'new-item -path "{windows_startup_path}" -name "camels_exe_path.txt" '
+                    f'-type "file" -value "{path_of_exe}"'],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                   stdin=subprocess.PIPE, shell=True, text=True)
+    subprocess.run(['powershell', fr'Copy-Item "rerun_camels_installer.exe" -Destination '
                                  fr'"{windows_startup_path}"'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                    stdin=subprocess.PIPE, shell=True, text=True)
+    time.sleep(3)
     subprocess.run(["powershell", "Start-Process", "powershell",
                     r"'dism.exe /online /enable-feature "
                     r"/featurename:Microsoft-Windows-Subsystem-Linux "
