@@ -280,7 +280,7 @@
    'C:\\Users\\fulapuser\\CAMELS_installer\\utility\\__init__.py',
    'PYMODULE'),
   ('PyQt5',
-   'c:\\users\\fulapuser\\camels\\.desertenv\\lib\\site-packages\\PyQt5\\__init__.py',
+   'c:\\users\\fulapuser\\camels_installer\\venv\\lib\\site-packages\\PyQt5\\__init__.py',
    'PYMODULE'),
   ('camlsinstallfunctions',
    'C:\\Users\\fulapuser\\CAMELS_installer\\camlsinstallfunctions.py',
