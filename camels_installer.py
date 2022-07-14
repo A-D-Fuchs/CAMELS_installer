@@ -36,7 +36,7 @@ class InstallThread(QThread):
         full_sanity_check(self.camels_install_path, self.checkbox_install_wsl,
                           self.checkbox_install_epics,self.checkbox_install_camels,
                           self.checkbox_install_pythonenv,
-                          self.progress_signal, self.info_signal)
+                          self.progress_signal, self.info_signal,)
 
 
 class InstallerWindow(QMainWindow, Ui_InstallerWindow):
@@ -63,18 +63,34 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
         self.groupBox_progress.setHidden(True)
         self.resize(self.minimumSizeHint())
         if len(sys.argv) > 1:
-            if sys.argv[1] == 'True':
-                print('argv pass worked')
+            self.radioButton_custom.setChecked(True)
+            if 'wsl' in sys.argv:
+                print('argv pass install wsl worked')
                 print(f'{sys.argv}')
-                if 'custom' in sys.argv:
-                    self.radioButton_custom.setChecked(True)
-                    if 'wsl' in sys.argv:
-                        self.checkBox_wsl.setChecked(True)
-
-                        ### MISSING checkBox values !!! ###
-
-                    self.pathButton_CAMELS.set_path(sys.argv[-1])
-                self.start_install()
+                self.checkBox_wsl.setChecked(True)
+            else:
+                print('not installing wsl')
+                self.checkBox_wsl.setChecked(False)
+            if 'epics' in sys.argv:
+                print('argv pass install epics worked')
+                self.checkBox_epics.setChecked(True)
+            else:
+                print('not installing epics')
+                self.checkBox_epics.setChecked(False)
+            if 'camels' in sys.argv:
+                print('argv pass install camels worked')
+                self.checkBox_camels.setChecked(True)
+            else:
+                print('not installing camels')
+                self.checkBox_camels.setChecked(False)
+            if 'pythonenv' in sys.argv:
+                print('argv pass install pyenv worked')
+                self.checkBox_python.setChecked(True)
+            else:
+                print('not installing pythonenv')
+                self.checkBox_python.setChecked(False)
+            self.pathButton_CAMELS.set_path(sys.argv[-1])
+            self.start_install()
 
     def start_install(self):
         if self.radioButton_full.isChecked():
@@ -114,6 +130,7 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
                           checkbox_install_epics, checkbox_install_camels,
                           checkbox_install_pythonenv,
                       progress_signal=None, info_signal=None):
+    password_ubuntu_input = False
     # check to see if install script is in the windows startup folder and removes it.
     if os.path.exists(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
                                                             r"\Startup\camels_restart.lnk")):
@@ -126,7 +143,8 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
                        checkbox_install_wsl,
                        checkbox_install_epics,
                        checkbox_install_camels,
-                       checkbox_install_pythonenv,)
+                       checkbox_install_pythonenv,
+                       camels_install_path,)
         else:
             info_signal.emit('Passed WSL enabled check')
             pass
@@ -161,9 +179,9 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
             setup_python_environment()
         else:
             info_signal.emit('Passed pyenv installed check')
-            setup_python_environment(info_signal)
+            setup_python_environment(camels_install_path,info_signal)
 
-    run_camels()
+    sys.exit(0)
 
 
 if __name__ == '__main__':

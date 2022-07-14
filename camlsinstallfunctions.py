@@ -123,30 +123,30 @@ def sanity_check_pyenv_installed(info_signal):
     
 
 def enable_wsl(exe_path,checkbox_install_wsl, checkbox_install_epics,
-               checkbox_install_camels, checkbox_install_pythonenv,):
-    # windows_startup_path = os.path.join(os.path.expanduser("~"),
-    #                                     r"AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
+               checkbox_install_camels, checkbox_install_pythonenv, camels_install_path):
     path_of_exe = sys.argv[0]
     path_exe_location = os.path.dirname(path_of_exe)
+    if checkbox_install_wsl:
+        checkbox_install_wsl = 'wsl'
+    if checkbox_install_epics:
+        checkbox_install_epics = 'epics'
+    if checkbox_install_camels:
+        checkbox_install_camels = 'camels'
+    if checkbox_install_pythonenv:
+        checkbox_install_pythonenv = 'pythonenv'
+    startup_path = os.path.join(os.path.expanduser('~'), r"AppData\Roaming\Microsoft\Windows\Start "
+                                  r"Menu\Programs\Startup\camels_restart.lnk")
     subprocess.run(['powershell', f'$SourceFilePath = "{path_of_exe}";'
-    r'$ShortcutPath = "C:\Users\fulapuser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\camels_restart.lnk";'
+    rf'$ShortcutPath = "{startup_path}";'
     r'$WScriptObj = New-Object -ComObject ("WScript.Shell");'
     r'$shortcut = $WscriptObj.CreateShortcut($ShortcutPath);'
     r'$shortcut.TargetPath = $SourceFilePath;'
     f'$shortcut.Arguments = "{checkbox_install_wsl} {checkbox_install_epics} '
-    f'{checkbox_install_camels} {checkbox_install_pythonenv}";'
+    f'{checkbox_install_camels} {checkbox_install_pythonenv} {camels_install_path}";'
     f'$shortcut.WorkingDirectory = "{path_exe_location}";'
     r'$shortcut.Save();'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                    stdin=subprocess.PIPE, shell=True, text=True)
-    # subprocess.run(['powershell', fr'new-item -path "{windows_startup_path}" -name "camels_exe_path.bat" '
-    #                 f'-type "file" -value "{total_command}"'],
-    #                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    #                stdin=subprocess.PIPE, shell=True, text=True)
-    # subprocess.run(['powershell', fr'Copy-Item "rerun_camels_installer.exe" -Destination '
-    #                              fr'"{windows_startup_path}"'],
-    #                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    #                stdin=subprocess.PIPE, shell=True, text=True)
     subprocess.run(["powershell", "Start-Process", "powershell",
                     r"'dism.exe /online /enable-feature "
                     r"/featurename:Microsoft-Windows-Subsystem-Linux "
@@ -489,6 +489,7 @@ def install_pyenv(info_signal):
                        shell=True, text=True)).stdout
         if r"See 'git" not in git_install_test:
             info_signal.emit('Git does not seem to be installed. Please install!')
+            time.sleep(10)
             sys.exit(1)
 
     info_signal.emit('Create .pyenv folder in the $HOME directory')
@@ -498,7 +499,7 @@ def install_pyenv(info_signal):
                                   "Copy-Item $HOME/pyenv-win/.version -Destination $HOME/.pyenv "],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, text=True)
-    info_signal.emit('Set environemnt variables')
+    info_signal.emit('Set environment variables')
     subprocess.run(["powershell", r'[System.Environment]::SetEnvironmentVariable("PYENV",'
                                   r'$env:USERPROFILE + "\.pyenv\pyenv-win\","User")'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
@@ -526,7 +527,7 @@ def install_pyenv(info_signal):
                    shell=True, text=True)
 
 
-def setup_python_environment(info_signal):
+def setup_python_environment(camels_install_path,info_signal):
 
     info_signal.emit('Installing python version 3.9.6')
     subprocess.run(["powershell", f"cd {os.path.expanduser('~')};"
@@ -543,17 +544,34 @@ def setup_python_environment(info_signal):
                           shell=True, text=True)).stdout:
         info_signal.emit('Installed 3.9.6 successfully')
     else:
-        info_signal.emit('Install of Python 3.9.6 not successful')
+        info_signal.emit('Python 3.9.6 is not installed')
 
-    info_signal.emit('Creating python virtual environment .desertenv')
-    subprocess.run(["powershell", r"cd $HOME/CAMELS; python -m venv .desertenv"],
+    #info_signal.emit('Creating python virtual environment .desertenv')
+    subprocess.run(["powershell", fr"cd {camels_install_path}; python -m venv .desertenv"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, text=True)
-    info_signal.emit('Installing the required packages into the virtual environment')
-    subprocess.run(["powershell", r"cd $HOME/CAMELS; ./.desertenv/Scripts/activate; "
-                                  r"pip install -r $HOME/CAMELS/requirements.txt"],
+    #info_signal.emit('Installing the required packages into the virtual environment')
+    subprocess.run(["powershell", fr"cd {camels_install_path}; ./.desertenv/Scripts/activate; "
+                                  fr"pip install -r {camels_install_path}/requirements.txt"],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                   text=True)
+    subprocess.run(['powershell',f'New-Item {camels_install_path}/runcamels.cmd;',
+                    fr'Set-Content {camels_install_path}/runcamels.cmd "powershell cd {camels_install_path}/.desertenv/Scripts/; .\activate;cd {camels_install_path};pythonw MainApp.py"'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, text=True)
+
+
+    subprocess.run(['powershell', f'$SourceFilePath = "{path_of_exe}";'
+    rf'$ShortcutPath = "{camels_install_path}/MainApp.py";'
+    r'$WScriptObj = New-Object -ComObject ("WScript.Shell");'
+    r'$shortcut = $WscriptObj.CreateShortcut($ShortcutPath);'
+    r'$shortcut.TargetPath = $SourceFilePath;'
+    f'$shortcut.Arguments = "";'
+    f'$shortcut.WorkingDirectory = "{path_exe_location}";'
+    r'$shortcut.Save();'],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                   shell=True, text=True)
+    print('test')
 
 
 def run_camels():
