@@ -561,19 +561,6 @@ def setup_python_environment(camels_install_path,info_signal):
                    shell=True, text=True)
 
 
-    subprocess.run(['powershell', f'$SourceFilePath = "{path_of_exe}";'
-    rf'$ShortcutPath = "{camels_install_path}/MainApp.py";'
-    r'$WScriptObj = New-Object -ComObject ("WScript.Shell");'
-    r'$shortcut = $WscriptObj.CreateShortcut($ShortcutPath);'
-    r'$shortcut.TargetPath = $SourceFilePath;'
-    f'$shortcut.Arguments = "";'
-    f'$shortcut.WorkingDirectory = "{path_exe_location}";'
-    r'$shortcut.Save();'],
-                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
-    print('test')
-
-
 def run_camels():
     """
     Starts the CAMELS software by activating the virtual environment and running the MainApp.py
