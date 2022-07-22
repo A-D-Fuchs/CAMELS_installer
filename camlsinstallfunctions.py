@@ -7,7 +7,7 @@ import tkinter.simpledialog
 import tkinter.messagebox
 
 
-def sanity_check_wsl_enabled(info_signal):
+def sanity_check_wsl_enabled(info_signal=None):
     """
     Sanity check to see if the WSL is enabled for windows on the PC. 
     
@@ -22,17 +22,23 @@ def sanity_check_wsl_enabled(info_signal):
                                       stdin=subprocess.PIPE,
                                       encoding='utf-16le',
                                       )).stdout
-
-    if '--set-default' in wsl_help_output:
-        info_signal.emit('WSL is enabled')
-        enabled = 1
+    if info_signal:
+        if '--set-default' in wsl_help_output:
+            info_signal.emit('WSL is enabled')
+            enabled = 1
+        else:
+            info_signal.emit('WSL not enabled')
+            enabled = 0
+        return enabled
     else:
-        info_signal.emit('WSL not enabled')
-        enabled = 0
-    return enabled
+        if '--set-default' in wsl_help_output:
+            enabled = 1
+        else:
+            enabled = 0
+        return enabled
         
 
-def sanity_check_ubuntu_installed(info_signal):
+def sanity_check_ubuntu_installed(info_signal=None):
     """
     Sanity check to see if Ubuntu is already installed on the computer. 
     Searches for any Ubuntu distro with r"(u*U*buntu\w{0,3}\.{0,1}\w{0,3})\n*"
@@ -48,16 +54,23 @@ def sanity_check_ubuntu_installed(info_signal):
     wsls = (subprocess.run(["powershell", "wsl", " -l", " -q"], encoding='utf-16le',
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                            stdin=subprocess.PIPE, shell=True, text=True)).stdout
-    if re.search(ubuntu_regex, wsls) is None:
-        info_signal.emit('Ubuntu is not installed.')
-        installed = 0
-    else: 
-        info_signal.emit('Ubuntu is already installed.')
-        installed = 1
-    return installed
+    if info_signal:
+        if re.search(ubuntu_regex, wsls) is None:
+            info_signal.emit('Ubuntu is not installed.')
+            installed = 0
+        else:
+            info_signal.emit('Ubuntu is already installed.')
+            installed = 1
+        return installed
+    else:
+        if re.search(ubuntu_regex, wsls) is None:
+            installed = 0
+        else:
+            installed = 1
+        return installed
 
 
-def sanity_check_epics_installed(info_signal):
+def sanity_check_epics_installed(info_signal=None):
      """
      Sanity check to see if EPICS is already installed on the computer. 
      Searches for the EPICS folder in the WSLS /home/user directory.
@@ -68,15 +81,24 @@ def sanity_check_epics_installed(info_signal):
      0: if EPICS is not installed
      
      """ 
-     if 'EPICS' in (subprocess.run(['powershell','wsl','ls /home/epics'],
-                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                    stdin=subprocess.PIPE, shell=True, text=True)).stdout:
-         info_signal.emit('EPICS installed already.')
-         installed = 1
+     if info_signal:
+         if 'EPICS' in (subprocess.run(['powershell','wsl','ls /home/epics'],
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        stdin=subprocess.PIPE, shell=True, text=True)).stdout:
+             info_signal.emit('EPICS installed already.')
+             installed = 1
+         else:
+             info_signal.emit('EPICS not installed yet.')
+             installed = 0
+         return installed
      else:
-         info_signal.emit('EPICS not installed yet.')
-         installed = 0
-     return installed
+         if 'EPICS' in (subprocess.run(['powershell','wsl','ls /home/epics'],
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        stdin=subprocess.PIPE, shell=True, text=True)).stdout:
+             installed = 1
+         else:
+             installed = 0
+         return installed
 
       
 def sanity_check_camels_installed(camels_install_path,info_signal):
@@ -262,6 +284,7 @@ def ubuntu_installer(password_ubuntu_input, info_signal):
     info_signal.emit('Installing Ubuntu.  Only click Yes after it asks you for a username and password ')
     # Here we would wait for a button to be pressed or something to continue
     ##############
+    tkinter.Tk().withdraw()
     ubuntu_installed_question = tkinter.messagebox.askquestion(
         'Ubuntu installed?', 'Klick Yes when Ubuntu is successfully installed')
     if ubuntu_installed_question == 'yes':

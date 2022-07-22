@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a9e5a944-46f0-405f-8897-367d7cd584b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/utility/pass_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CAMELS_installer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAMELS_installer.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/camels_installer.py" beforeDir="false" afterPath="$PROJECT_DIR$/camels_installer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/installer_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/installer_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/installer_window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/gui/installer_window.ui" afterDir="false" />
+    <list default="true" id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/camlsinstallfunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/camlsinstallfunctions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,17 +13,20 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="2BelINzwfgiiXLV4mzXUf5qvh15" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2CI4pQEgCgPqsbQxSAHAGJCjXgS" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="run.code.analysis.last.selected.profile" value="aDefault" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
   <component name="RunManager">
     <configuration name="camels_installer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CAMELS_installer" />
@@ -59,23 +58,23 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a9e5a944-46f0-405f-8897-367d7cd584b2" name="Changes" comment="" />
-      <created>1657274351101</created>
+      <changelist id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="" />
+      <created>1658476946733</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1657274351101</updated>
+      <updated>1658476946733</updated>
     </task>
     <servers />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/camels_installer.py</url>
-          <line>135</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
   </component>
 </project>
