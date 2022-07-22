@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="">
+    <list default="true" id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="Fixed error with info_signal">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/camlsinstallfunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/camlsinstallfunctions.py" afterDir="false" />
     </list>
@@ -21,12 +21,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="camels_installer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CAMELS_installer" />
@@ -64,7 +64,30 @@
       <option name="presentableId" value="Default" />
       <updated>1658476946733</updated>
     </task>
+    <task id="LOCAL-00001" summary="Fixed error with info_signal">
+      <created>1658481169301</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1658481169301</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed error with info_signal" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed error with info_signal" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -404,7 +404,7 @@ def install_epics_base(password_ubuntu_input,info_signal):
 
     info_signal.emit('Installing required packages')
     for package in package_list:
-        info_signal.emit(f'    {package}')
+        info_signal.emit(f'Installing relevant package: {package}')
         subprocess.run(["wsl", "sudo", "-S", "<<<", f"{password_ubuntu_input}",
                         "apt", "install", "-y", f"{package}"],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
