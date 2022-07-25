@@ -7,7 +7,8 @@ Created on Thu Jun 30 11:52:01 2022
 
 import sys
 import os
-from camlsinstallfunctions import (sanity_check_wsl_enabled, 
+from camlsinstallfunctions import (
+        sanity_check_wsl_enabled,
         sanity_check_ubuntu_installed, sanity_check_camels_installed,
         sanity_check_pyenv_installed, enable_wsl, set_ubuntu_user_password,
         ubuntu_installer, install_epics_base, install_camels,
@@ -115,10 +116,13 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
             epics_install_bool = self.checkBox_epics.isChecked()
             camels_install_bool = self.checkBox_camels.isChecked()
             pythonenv_install_bool = self.checkBox_python.isChecked()
-        if ((wsl_install_bool and sanity_check_wsl_enabled() != 0 and sanity_check_ubuntu_installed() == 0) or (epics_install_bool and sanity_check_epics_installed() == 0)) and not ubuntu_pwd:
+        if ((wsl_install_bool and sanity_check_wsl_enabled() != 0 and
+                sanity_check_ubuntu_installed() == 0) or
+                (epics_install_bool and sanity_check_epics_installed() == 0)) and not ubuntu_pwd:
             self.get_pass()
             return
         self.groupBox_progress.setHidden(False)
+        self.pass_widget.setHidden(True)
         self.install_thread = InstallThread(camels_install_path, wsl_install_bool,
                                             epics_install_bool, camels_install_bool,
                                             pythonenv_install_bool, ubuntu_pwd)

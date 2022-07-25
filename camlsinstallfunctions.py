@@ -20,8 +20,9 @@ def sanity_check_wsl_enabled(info_signal=None):
     wsl_help_output = (subprocess.run(["powershell", "wsl", "--help"],
                                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                       stdin=subprocess.PIPE,
-                                      encoding='utf-16le',
+                                    #  encoding='utf-16le',
                                       )).stdout
+    wsl_help_output = wsl_help_output.decode('utf-16')
     if info_signal:
         if '--set-default' in wsl_help_output:
             info_signal.emit('WSL is enabled')
@@ -51,9 +52,11 @@ def sanity_check_ubuntu_installed(info_signal=None):
     
     """
     ubuntu_regex = r"(u*U*buntu\w{0,3}\.{0,1}\w{0,3})\n*"
-    wsls = (subprocess.run(["powershell", "wsl", " -l", " -q"], encoding='utf-16le',
+    wsls = (subprocess.run(["powershell", "wsl", " -l", " -q"],
+                           #encoding='utf-16le',
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                           stdin=subprocess.PIPE, shell=True, text=True)).stdout
+                           stdin=subprocess.PIPE, shell=True, )).stdout
+    wsls = wsls.decode('utf-16')
     if info_signal:
         if re.search(ubuntu_regex, wsls) is None:
             info_signal.emit('Ubuntu is not installed.')
@@ -82,9 +85,9 @@ def sanity_check_epics_installed(info_signal=None):
      
      """ 
      if info_signal:
-         if 'EPICS' in (subprocess.run(['powershell','wsl','ls /home/epics'],
+         if 'EPICS' in ((subprocess.run(['powershell','wsl','ls /home/epics'],
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                        stdin=subprocess.PIPE, shell=True, text=True)).stdout:
+                        stdin=subprocess.PIPE, shell=True, )).stdout).decode('utf-8'):
              info_signal.emit('EPICS installed already.')
              installed = 1
          else:
@@ -92,9 +95,9 @@ def sanity_check_epics_installed(info_signal=None):
              installed = 0
          return installed
      else:
-         if 'EPICS' in (subprocess.run(['powershell','wsl','ls /home/epics'],
+         if 'EPICS' in ((subprocess.run(['powershell','wsl','ls /home/epics'],
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                        stdin=subprocess.PIPE, shell=True, text=True)).stdout:
+                        stdin=subprocess.PIPE, shell=True, )).stdout).decode('utf-8'):
              installed = 1
          else:
              installed = 0
@@ -134,11 +137,11 @@ def sanity_check_pyenv_installed(info_signal):
     
     """
     if (subprocess.run(["powershell", "pyenv"],                  
-                   shell=True, text=True)).returncode == 0:
+                   shell=True, )).returncode == 0:
         info_signal.emit('pyenv already installed')
         installed = 1
     elif (subprocess.run(["powershell", "pyenv"],                  
-                   shell=True, text=True)).returncode == 1:
+                   shell=True, )).returncode == 1:
         info_signal.emit('pyenv not installed')
         installed = 0
     return installed   
@@ -168,13 +171,13 @@ def enable_wsl(exe_path,checkbox_install_wsl, checkbox_install_epics,
     f'$shortcut.WorkingDirectory = "{path_exe_location}";'
     r'$shortcut.Save();'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE, shell=True, text=True)
+                   stdin=subprocess.PIPE, shell=True, )
     subprocess.run(["powershell", "Start-Process", "powershell",
                     r"'dism.exe /online /enable-feature "
                     r"/featurename:Microsoft-Windows-Subsystem-Linux "
                     r"/all /norestart'", "-Verb", "runAs"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE, shell=True, text=True)
+                   stdin=subprocess.PIPE, shell=True, )
     time.sleep(3)
     restart_windows_answer = tkinter.messagebox.askquestion(
         'Restart Windows', 'Klick Yes to restart Windows now and '
@@ -182,7 +185,7 @@ def enable_wsl(exe_path,checkbox_install_wsl, checkbox_install_epics,
     if restart_windows_answer == 'yes':
         subprocess.run(["powershell", "Restart-Computer -Force"],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                       stdin=subprocess.PIPE, shell=True, text=True)
+                       stdin=subprocess.PIPE, shell=True, )
 
     
 
@@ -273,14 +276,14 @@ def ubuntu_installer(password_ubuntu_input, info_signal):
     info_signal.emit('Setting default WSL version to 1')
     subprocess.run(["powershell", "wsl --set-default-version 1"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE, shell=True, text=True)
+                   stdin=subprocess.PIPE, shell=True, )
     info_signal.emit('Installing Ubuntu')
     info_signal.emit('Do NOT close the Ubuntu terminal until it asks you for a username and password!')
     info_signal.emit('Close the Ubuntu terminal after it asks you for a username and password')
     info_signal.emit('Wait for a Ubuntu command prompt to open.')
     subprocess.run(["powershell", "wsl --install -d Ubuntu"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE, shell=True, text=True)
+                   stdin=subprocess.PIPE, shell=True, )
     info_signal.emit('Installing Ubuntu.  Only click Yes after it asks you for a username and password ')
     # Here we would wait for a button to be pressed or something to continue
     ##############
@@ -290,69 +293,73 @@ def ubuntu_installer(password_ubuntu_input, info_signal):
     if ubuntu_installed_question == 'yes':
         subprocess.run(['powershell','taskkill /IM ubuntu.exe /F'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE, shell=True, text=True)
+                   stdin=subprocess.PIPE, shell=True, )
     ##############
-    wsls = (subprocess.run(["powershell", "wsl -l -q"], encoding='utf-16le',
-                           capture_output=True, shell=True, text=True)).stdout
+    wsls = (subprocess.run(["powershell", "wsl -l -q"],
+                           #encoding='utf-16le',
+                           capture_output=True, shell=True, )).stdout
+    wsls = wsls.decode('utf-16')
     ubuntu_regex_match = re.search(ubuntu_regex, wsls)
     subprocess.run(["powershell", f"wsl --setdefault {ubuntu_regex_match.group(1)}"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE, shell=True, text=True)
+                   stdin=subprocess.PIPE, shell=True, )
 
     # sets the root password to root
     subprocess.run(["powershell","wsl", "chpasswd `<`<`< root:root"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE, shell=True, text=True)
+                   stdin=subprocess.PIPE, shell=True, )
 
     info_signal.emit('Running regex match for user name')
-    if re.search('.*no such user.*', ((subprocess.run(['powershell',"wsl", "id", "-u", "epics"],
-                                                      text=True, encoding=' utf-8',
+    get_epics_user_id = ((subprocess.run(['powershell',"wsl", "id", "-u", "epics"],
+                                                    # encoding=' utf-8',
                                                       stdout=subprocess.PIPE,
                                                       stderr=subprocess.PIPE,
-                                                      stdin=subprocess.PIPE)).stderr)):
+                                                      stdin=subprocess.PIPE)).stderr)
+    get_epics_user_id = get_epics_user_id.decode('utf-8')
+    if re.search('.*no such user.*', get_epics_user_id):
         info_signal.emit('creating user: "epics" in fresh install')
         info_signal.emit(r'Adding user')
-        subprocess.run(['powershell',"wsl", "adduser", "epics"], text=True,
+        subprocess.run(['powershell',"wsl", "adduser", "epics"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE, stdin=subprocess.PIPE)
         info_signal.emit('Changing password')
         subprocess.run(["powershell","wsl","chpasswd `<`<`<" f"epics:{password_ubuntu_input}"],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                        stdin=subprocess.PIPE,
-                       text=True)
+                       )
         info_signal.emit('Adding user to sudo group')
         subprocess.run(['powershell',"wsl", "usermod", "-aG", "sudo", "epics"],
                        stdout=subprocess.PIPE,
-                       stderr=subprocess.PIPE, stdin=subprocess.PIPE, text=True)
+                       stderr=subprocess.PIPE, stdin=subprocess.PIPE, )
         info_signal.emit('Setting user as default')
         subprocess.run(["powershell", "ubuntu config --default-user epics"],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
                        stdin=subprocess.PIPE,
-                       shell=True, text=True)
+                       shell=True, )
 
     # if re.search('.*no such user.*', ((subprocess.run(["Ubuntu", "run", "id", "-u", "epics"],
-    #                                                   text=True, encoding=' utf-8',
+    #                                                   encoding=' utf-8',
     #                                                   stdout=subprocess.PIPE,
     #                                                   stderr=subprocess.PIPE,
     #                                                   stdin=subprocess.PIPE)).stderr)):
     #     print('creating user: "epics" in existing install')
     #     print('Adding user')
     #     print(subprocess.run(["wsl", "adduser", "epics"], stdout=subprocess.PIPE,
-    #                          stderr=subprocess.PIPE, stdin=subprocess.PIPE, text=True))
+    #                          stderr=subprocess.PIPE, stdin=subprocess.PIPE, ))
     #     print('Changing password')
     #     print(subprocess.run(["wsl", "echo", f"epics:{password_ubuntu_input}", "|", "chpasswd"],
     #                          stdout=subprocess.PIPE,
     #                          stderr=subprocess.PIPE,
     #                          stdin=subprocess.PIPE,
-    #                          text=True))
+    #                          ))
     #     print('Adding user to sudo group')
     #     print(subprocess.run(["wsl", "usermod", "-aG", "sudo", "epics"],
     #                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    #                          stdin=subprocess.PIPE, text=True))
+    #                          stdin=subprocess.PIPE, ))
     #     print('Setting user as default')
     #     print(subprocess.run(["powershell", "ubuntu config --default-user epics"],
     #                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    #                          stdin=subprocess.PIPE, shell=True, text=True))
+    #                          stdin=subprocess.PIPE, shell=True, ))
     
 
 
@@ -462,7 +469,7 @@ def install_epics_base(password_ubuntu_input,info_signal):
     try:
         (subprocess.run(["wsl", "ln", "-s", "/home/epics/EPICS/epics-support/RELEASE.local",
                          "/home/epics/IOCs/RELEASE.local"],
-                        text=True, stdout=subprocess.PIPE,
+                        stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE, stdin=subprocess.PIPE))
         info_signal.emit("linked SUPPORT RELEASE.local into IOCs folder.\n")
     except:
@@ -487,12 +494,12 @@ def install_camels(info_signal):
     subprocess.run(["powershell", "git clone https://github.com/FAU-LAP/CAMELS.git "
                                   "%USERPROFILE%/CAMELS"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
     info_signal.emit('Installing module for PID controller')
     subprocess.run(["powershell", "wsl", "cd ~/EPICS/epics-support/ `&`& "
                                          "git clone https://github.com/epics-modules/std.git"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
 
 def install_pyenv(info_signal):
@@ -500,16 +507,16 @@ def install_pyenv(info_signal):
     info_signal.emit('Setup correct line endings so that all are in UNIX format')
     subprocess.run(["powershell", "git config --global core.eol lf;git config --global core.autocrlf input"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
     info_signal.emit('Clone pyenv for windows from Github')
     subprocess.run(["powershell", "cd $HOME; git clone https://github.com/pyenv-win/pyenv-win.git"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
     if not os.path.exists(os.path.join(os.path.expanduser('~'), "CAMELS")):
         info_signal.emit('Git clone unsuccessful.')
         git_install_test = (subprocess.run(['powershell', 'git help -a'],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                       shell=True, text=True)).stdout
+                       shell=True, )).stdout
         if r"See 'git" not in git_install_test:
             info_signal.emit('Git does not seem to be installed. Please install!')
             time.sleep(10)
@@ -521,33 +528,33 @@ def install_pyenv(info_signal):
                                   "-Destination $HOME/.pyenv -Recurse; "
                                   "Copy-Item $HOME/pyenv-win/.version -Destination $HOME/.pyenv "],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
     info_signal.emit('Set environment variables')
     subprocess.run(["powershell", r'[System.Environment]::SetEnvironmentVariable("PYENV",'
                                   r'$env:USERPROFILE + "\.pyenv\pyenv-win\","User")'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
     subprocess.run(["powershell", r'[System.Environment]::SetEnvironmentVariable("PYENV_HOME",'
                                   r'$env:USERPROFILE + "\.pyenv\pyenv-win\","User")'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
     subprocess.run(["powershell", r'[System.Environment]::SetEnvironmentVariable("path", '
                                   r'$env:USERPROFILE + "\.pyenv\pyenv-win\bin;" + $env:USERPROFILE +'
                                   r' "\.pyenv\pyenv-win\shims;" + [System.Environment]::'
                                   r'GetEnvironmentVariable("path", "User"),"User")'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
     info_signal.emit('Set script execution policy to "unrestricted " for the current user')
     subprocess.run(["powershell", r'Set-ExecutionPolicy -ExecutionPolicy Unrestricted '
                                   r'-Scope CurrentUser -Force'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
     subprocess.run(["powershell", r'Unblock-File $HOME/.pyenv/pyenv-win/bin/pyenv.ps1'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
 
 def setup_python_environment(camels_install_path,info_signal):
@@ -556,15 +563,15 @@ def setup_python_environment(camels_install_path,info_signal):
     subprocess.run(["powershell", f"cd {os.path.expanduser('~')};"
                     "pyenv install 3.9.6"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
     info_signal.emit('Setting python 3.9.6 as the default global python in Powershell')
     subprocess.run(["powershell", "pyenv global 3.9.6"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
     if '3.9.6' in (subprocess.run(["powershell", "pyenv versions"],
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                          shell=True, text=True)).stdout:
+                          shell=True, )).stdout:
         info_signal.emit('Installed 3.9.6 successfully')
     else:
         info_signal.emit('Python 3.9.6 is not installed')
@@ -572,16 +579,16 @@ def setup_python_environment(camels_install_path,info_signal):
     #info_signal.emit('Creating python virtual environment .desertenv')
     subprocess.run(["powershell", fr"cd {camels_install_path}; python -m venv .desertenv"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
     #info_signal.emit('Installing the required packages into the virtual environment')
     subprocess.run(["powershell", fr"cd {camels_install_path}; ./.desertenv/Scripts/activate; "
                                   fr"pip install -r {camels_install_path}/requirements.txt"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   text=True)
+                   )
     subprocess.run(['powershell',f'New-Item {camels_install_path}/runcamels.cmd;',
                     fr'Set-Content {camels_install_path}/runcamels.cmd "powershell cd {camels_install_path}/.desertenv/Scripts/; .\activate;cd {camels_install_path};pythonw MainApp.py"'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
 
 def run_camels():
@@ -597,5 +604,5 @@ def run_camels():
                                   './.desertenv/Scripts/activate; '
                                   'python .\MainApp.py'],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                   shell=True, text=True)
+                   shell=True, )
 
