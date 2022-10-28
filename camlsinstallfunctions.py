@@ -75,6 +75,33 @@ def sanity_check_ubuntu_installed(info_signal=None):
         return installed
 
 
+def sanity_check_ubuntu_user_exists(info_signal=None):
+    """
+    Sanity check to see if the user 'epics' already exists in the Ubuntu environment.
+
+    Returns
+    -------
+    1: if 'epics' is the default user\n
+    0: if 'epics' is not the default user'
+
+    """
+    default_user = str((subprocess.run(["powershell", "wsl", " whoami"],
+                        encoding='utf-8',
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        stdin=subprocess.PIPE, shell=True,
+                        creationflags=subprocess.CREATE_NO_WINDOW, )).stdout)
+    if default_user == 'epics\n':
+        if info_signal:
+            info_signal.emit("User 'epics' is already setup.")
+        return (1)
+    else:
+        if info_signal:
+            info_signal.emit("A different user than 'epics' is setup as default")
+            info_signal.emit("Enter a password for the current default Ubuntu user:")
+        return (0)
+
+
+
 def sanity_check_epics_installed(info_signal=None):
      """
      Sanity check to see if EPICS is already installed on the computer. 
@@ -213,45 +240,12 @@ def input_password():
     return password_ubuntu_input
 
 
-def set_ubuntu_user_password(info_signal):
-    """
-    This function asks the user to input the password for the Ubuntu user 'epics'.
-    Not typing a password and pressing 'OK' or clicking 'Cancel'  will cause another
-    password input prompt.
-    It calls the Ubuntu setup function and passes the password to that function.
-    """
-    default_ubuntu_password = 'epics4camels'
+def input_password_once():
     tkinter.Tk().withdraw()
-    password_ubuntu_input = input_password()
-
-    if password_ubuntu_input is None:
-        tkinter.messagebox.showinfo("Invalid password - Password is None",
-                                    "Please enter a valid password "
-                                    "for the Ubuntu user")
-        input_password()
-    if password_ubuntu_input is not None:
-        if len(password_ubuntu_input) == 0:
-            tkinter.messagebox.showinfo("Invalid password", "Password must contain at "
-                                                            "least 1 character")
-            input_password()
-
-    if password_ubuntu_input is None:
-        password_ubuntu_input = f'{default_ubuntu_password}'
-        info_signal.emit(f'Your password was set to \'{default_ubuntu_password}\' as none was given')
-        tkinter.messagebox.showinfo('Force Password',
-                                    'Password set to epics4camels '
-                                    'as no valid password was given')
-    else:
-        if len(password_ubuntu_input) == 0:
-            password_ubuntu_input = f'{default_ubuntu_password}'
-            info_signal.emit(f'Your password was set to \'{default_ubuntu_password}\' as none was given')
-            tkinter.messagebox.showinfo('Force Password',
-                                        'Password set to epics4camels '
-                                        'as no valid password was given')
-
-    info_signal.emit('Setting password was successful')
-    # tkinter.messagebox.showinfo('Setting password successful',
-    #                             'Password set. Click OK to continue and install Ubuntu')
+    password_ubuntu_input = tkinter.simpledialog.askstring("Password",
+                                                           "Enter password for the current "
+                                                           "default Ubuntu user:",
+                                                           show='*')
     return password_ubuntu_input
 
 
@@ -344,7 +338,7 @@ def ubuntu_installer(password_ubuntu_input, info_signal):
                        creationflags=subprocess.CREATE_NO_WINDOW,
                        )
         info_signal.emit('Adding user to sudo group')
-        subprocess.run(['powershell',"wsl", "usermod", "-aG", "sudo", "epics"],
+        subprocess.run(['powershell',"wsl", "sudo", "usermod", "-aG", "sudo", "epics"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                        creationflags=subprocess.CREATE_NO_WINDOW,)
@@ -354,33 +348,111 @@ def ubuntu_installer(password_ubuntu_input, info_signal):
                        stdin=subprocess.PIPE,
                        shell=True, creationflags=subprocess.CREATE_NO_WINDOW, )
 
-    # if re.search('.*no such user.*', ((subprocess.run(["Ubuntu", "run", "id", "-u", "epics"],
-    #                                                   encoding=' utf-8',
-    #                                                   stdout=subprocess.PIPE,
-    #                                                   stderr=subprocess.PIPE,
-    #                                                   stdin=subprocess.PIPE)).stderr)):
-    #     print('creating user: "epics" in existing install')
-    #     print('Adding user')
-    #     print(subprocess.run(["wsl", "adduser", "epics"], stdout=subprocess.PIPE,
-    #                          stderr=subprocess.PIPE, stdin=subprocess.PIPE, ))
-    #     print('Changing password')
-    #     print(subprocess.run(["wsl", "echo", f"epics:{password_ubuntu_input}", "|", "chpasswd"],
-    #                          stdout=subprocess.PIPE,
-    #                          stderr=subprocess.PIPE,
-    #                          stdin=subprocess.PIPE,
-    #                          ))
-    #     print('Adding user to sudo group')
-    #     print(subprocess.run(["wsl", "usermod", "-aG", "sudo", "epics"],
-    #                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    #                          stdin=subprocess.PIPE, ))
-    #     print('Setting user as default')
-    #     print(subprocess.run(["powershell", "ubuntu config --default-user epics"],
-    #                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    #                          stdin=subprocess.PIPE, shell=True, ))
-    
+
+def set_ubuntu_user_password(info_signal):
+    """
+    This function asks the user to input the password for the Ubuntu user 'epics'.
+    Not typing a password and pressing 'OK' or clicking 'Cancel'  will cause another
+    password input prompt.
+    It calls the Ubuntu setup function and passes the password to that function.
+    """
+    default_ubuntu_password = 'epics4camels'
+    tkinter.Tk().withdraw()
+    password_ubuntu_input = input_password()
+
+    if password_ubuntu_input is None:
+        tkinter.messagebox.showinfo("Invalid password - Password is None",
+                                    "Please enter a valid password "
+                                    "for the Ubuntu user")
+        input_password()
+    if password_ubuntu_input is not None:
+        if len(password_ubuntu_input) == 0:
+            tkinter.messagebox.showinfo("Invalid password", "Password must contain at "
+                                                            "least 1 character")
+            password_ubuntu_input = input_password()
+
+    if password_ubuntu_input is None:
+        password_ubuntu_input = f'{default_ubuntu_password}'
+        info_signal.emit(f'Your password was set to \'{default_ubuntu_password}\' '
+                         f'as none was given')
+        tkinter.messagebox.showinfo('Force Password',
+                                    'Password set to epics4camels '
+                                    'as no valid password was given')
+    else:
+        if len(password_ubuntu_input) == 0:
+            password_ubuntu_input = f'{default_ubuntu_password}'
+            info_signal.emit(f'Your password was set to \'{default_ubuntu_password}\' '
+                             f'as none was given')
+            tkinter.messagebox.showinfo('Force Password',
+                                        'Password set to epics4camels '
+                                        'as no valid password was given')
+
+    info_signal.emit('Setting password was successful')
+    return password_ubuntu_input
 
 
-def install_epics_base(password_ubuntu_input,info_signal):
+def input_ubuntu_user_password(info_signal=None):
+    """
+    This function asks the user to input the password for the already existing Ubuntu user.
+    Not typing a password and pressing 'OK' or clicking 'Cancel'  will cause another
+    password input prompt.
+    """
+    tkinter.Tk().withdraw()
+    password_ubuntu_input = input_password_once()
+
+    if password_ubuntu_input is None:
+        tkinter.messagebox.showinfo("Invalid password - Password is None",
+                                    "Please enter a valid password "
+                                    "for the default WSL user")
+        password_ubuntu_input = input_password_once()
+    if info_signal:
+        info_signal.emit('Setting password was successful')
+    # tkinter.messagebox.showinfo('Setting password successful',
+    #                             'Password set. Click OK to continue and install Ubuntu')
+    return password_ubuntu_input
+
+def setup_epics_user(default_user_password, ubuntu_pwd, info_signal):
+    """
+    :param default_user_password: Password of the currently installed default Ubuntu user
+    with sudo rights
+    :param ubuntu_pwd: Password that should be used for the Ubuntu user 'epics'
+    :param info_signal:
+    :return:
+    """
+    ubuntu_regex = r"(u*U*buntu\w{0,3}\.{0,1}\w{0,3})\n*"
+    wsls = (subprocess.run(["powershell", "wsl -l -q"],
+                           # encoding='utf-16le',
+                           capture_output=True, shell=True,
+                           creationflags=subprocess.CREATE_NO_WINDOW, )).stdout
+    wsls = wsls.decode('utf-16')
+    ubuntu_regex_match = re.search(ubuntu_regex, wsls)
+    info_signal.emit('setting Ubuntu as the default WSL')
+    subprocess.run(["powershell", f"wsl --setdefault {ubuntu_regex_match.group(1)}"],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                   stdin=subprocess.PIPE, shell=True,
+                   creationflags=subprocess.CREATE_NO_WINDOW, )
+    info_signal.emit('creating user: "epics" in existing install')
+    info_signal.emit(r'Adding user')
+    subprocess.run(
+        ["wsl", "sudo", "-S", "<<<", f"{default_user_password}", "adduser", "epics",
+         "&&", "sudo", "chpasswd", "<<<", f"epics:{ubuntu_pwd}"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+        creationflags=subprocess.CREATE_NO_WINDOW, )
+    info_signal.emit('Adding user to sudo group')
+    subprocess.run(["wsl","sudo", "-S", "<<<", f"{default_user_password}", "usermod", "-aG", "sudo", "epics"],
+                   stdout=subprocess.PIPE,
+                   stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                   creationflags=subprocess.CREATE_NO_WINDOW, )
+    info_signal.emit('Setting user as default')
+    subprocess.run(["powershell", "ubuntu config --default-user epics"],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                   stdin=subprocess.PIPE,
+                   shell=True, creationflags=subprocess.CREATE_NO_WINDOW, )
+
+
+
+def install_epics_base(password_ubuntu_input,info_signal,):
     """
     This function installs a basic version of EPICS in the Ubuntu WSL.
     It is derived from the debian-setup.py from the FHI Gitlab page

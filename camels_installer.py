@@ -10,7 +10,8 @@ import os
 from camlsinstallfunctions import (
         sanity_check_wsl_enabled,
         sanity_check_ubuntu_installed, sanity_check_camels_installed,
-        sanity_check_pyenv_installed, enable_wsl, set_ubuntu_user_password,
+        sanity_check_pyenv_installed, sanity_check_ubuntu_user_exists,
+        enable_wsl, input_ubuntu_user_password, setup_epics_user,
         ubuntu_installer, install_epics_base, install_camels,
         setup_python_environment, run_camels, sanity_check_epics_installed,
         install_pyenv)
@@ -18,6 +19,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QWidget
 from PyQt5.QtCore import QCoreApplication, QThread, pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap
 from gui.installer_window import Ui_InstallerWindow
+import subprocess
 
 
 class InstallThread(QThread):
@@ -63,7 +65,6 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
         self.pushButton_cancel.clicked.connect(self.close)
         self.pathButton_CAMELS.set_path(os.path.join(os.path.expanduser('~'), 'CAMELS'))
         self.pushButton_install.clicked.connect(self.start_install)
-        # self.checkBox_wsl.clicked.connect(self.install_wsl_change)
         self.install_thread = None
 
         self.pass_widget.pass_done.connect(self.start_install)
@@ -116,9 +117,11 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
             epics_install_bool = self.checkBox_epics.isChecked()
             camels_install_bool = self.checkBox_camels.isChecked()
             pythonenv_install_bool = self.checkBox_python.isChecked()
-        if ((wsl_install_bool and sanity_check_wsl_enabled() != 0 and
-                sanity_check_ubuntu_installed() == 0) or
-                (epics_install_bool and sanity_check_epics_installed() == 0)) and not ubuntu_pwd:
+        if (((wsl_install_bool
+             and sanity_check_wsl_enabled() != 0
+             and sanity_check_ubuntu_installed() == 0) or
+                (epics_install_bool and sanity_check_epics_installed() == 0)) \
+                or sanity_check_ubuntu_user_exists() == 0) and not ubuntu_pwd:
             self.get_pass()
             return
         self.groupBox_progress.setHidden(False)
@@ -155,7 +158,6 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
                       checkbox_install_epics, checkbox_install_camels,
                       checkbox_install_pythonenv, ubuntu_pwd,
                       progress_signal=None, info_signal=None):
-    password_ubuntu_input = False
     # check to see if install script is in the windows startup folder and removes it.
 
     if os.path.exists(os.path.join(os.path.expanduser('~'), "AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
@@ -182,15 +184,20 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
         else:
             info_signal.emit('Passed ubuntu installed check')
             pass
+
+
     if progress_signal:
         progress_signal.emit(25)
+
     if checkbox_install_epics:
+        if sanity_check_ubuntu_user_exists(info_signal):
+            pass
+        else:
+            default_user_password = input_ubuntu_user_password()
+            setup_epics_user(default_user_password, ubuntu_pwd,info_signal)
+
         if sanity_check_epics_installed() == 0:
-            # if password_ubuntu_input:
-            #     pass
-            # else:
-            #     password_ubuntu_input = set_ubuntu_user_password(info_signal)
-            install_epics_base(ubuntu_pwd,info_signal)
+            install_epics_base(ubuntu_pwd,info_signal,)
         else:
             info_signal.emit('Passed EPICS installed check')
             pass
@@ -212,8 +219,6 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
 
 
 if __name__ == '__main__':
-
-    # full_sanity_check(os.path.expanduser('~'))
     app = QCoreApplication.instance()
     if app is None:
         app = QApplication(sys.argv)
@@ -221,4 +226,5 @@ if __name__ == '__main__':
     ui.show()
     app.exec_()
 
-    
+command = "echo 'junker:124' `| sudo chpasswd;123"
+ret = subprocess.run("powershell", "wsl", f"{command}", shell=True)
