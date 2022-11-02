@@ -244,7 +244,8 @@ def input_password_once():
     tkinter.Tk().withdraw()
     password_ubuntu_input = tkinter.simpledialog.askstring("Password",
                                                            "Enter password for the current "
-                                                           "default Ubuntu user:",
+                                                           "default Ubuntu user: \n"
+                                                           "This user must have sudo rights!",
                                                            show='*')
     return password_ubuntu_input
 
@@ -447,8 +448,7 @@ def setup_epics_user(default_user_password, ubuntu_pwd, info_signal):
     info_signal.emit('Setting user as default')
     subprocess.run(["powershell", "ubuntu config --default-user epics"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   stdin=subprocess.PIPE,
-                   shell=True, creationflags=subprocess.CREATE_NO_WINDOW, )
+                   stdin=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW, )
 
 
 
@@ -462,7 +462,7 @@ def install_epics_base(password_ubuntu_input,info_signal,):
     ----------
     password_ubuntu_input: Password passed to this function by ubuntu_installer() and initially
     set by set_ubuntu_user_password().
-    The default password if no password was given is 'epics4camels' without the paranthesis.
+    The default password if no password was given is 'epics4camels' without the parenthesis.
 
     -------
 
@@ -503,7 +503,7 @@ def install_epics_base(password_ubuntu_input,info_signal,):
     info_signal.emit('Installing required packages')
     for package in package_list:
         info_signal.emit(f'Installing relevant package: {package}')
-        subprocess.run(["wsl", "sudo", "-S", "<<<", f"{password_ubuntu_input}",
+        run = subprocess.run(["wsl", "sudo", "-S", "<<<", f"{password_ubuntu_input}",
                         "apt", "install", "-y", f"{package}"],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                        creationflags=subprocess.CREATE_NO_WINDOW,)
@@ -527,18 +527,21 @@ def install_epics_base(password_ubuntu_input,info_signal,):
 
     wsl_path: str = os.path.join(r"\\wsl$\Ubuntu", '')
     info_signal.emit("setting up EPICS environment...")
-    with open(os.path.join(wsl_path, '\home\epics\.bashrc'), "rb+") as profile:
-        epics_env = ("\n\nexport EPICS_BASE=${HOME}/EPICS/epics-base\n"
-                     "export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)\n"
-                     "export PATH=${EPICS_BASE}/bin/${EPICS_HOST_ARCH}:${PATH}\n"
-        )
-        content = profile.read()
-        if ("EPICS_BASE").encode('UTF-8') in content:
-            info_signal.emit('EPICS BASE already added to path')
-        else:
-            info_signal.emit('Setting EPICS environment variables in .bashrc')
-            profile.write(epics_env.encode('UTF-8'))
-            profile.truncate()
+    epics_env = ("\n\nexport EPICS_BASE=\${HOME}/EPICS/epics-base\n"
+                     "export EPICS_HOST_ARCH=\$(\${EPICS_BASE}/startup/EpicsHostArch)\n"
+                     "export PATH=\${EPICS_BASE}/bin/\${EPICS_HOST_ARCH}:\${PATH}\n"
+                )
+    content = str(subprocess.run(["wsl", "cd", "~","&&", "more", ".bashrc"],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                   creationflags=subprocess.CREATE_NO_WINDOW,).stdout)
+    print(f'{content}')
+    if ("export EPICS_BASE=${HOME}/EPICS/epics-base") in content:
+        info_signal.emit('EPICS BASE already added to path')
+    else:
+        info_signal.emit('Setting EPICS environment variables in .bashrc')
+        subprocess.run(["wsl", "cd", "~", "&&", "echo", "-e", f"{epics_env}", ">>", ".bashrc"],
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                       creationflags=subprocess.CREATE_NO_WINDOW, )
 
     info_signal.emit('Cloning support modules')
     subprocess.run(["wsl", "git", "clone", "--recursive",

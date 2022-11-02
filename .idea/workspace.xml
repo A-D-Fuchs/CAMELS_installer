@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="Added CCREATE_NO_WINDOW to all subprocess calls">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="Added sanity check if WSL is already installed with a user different than epics">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/camels_installer.py" beforeDir="false" afterPath="$PROJECT_DIR$/camels_installer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/camlsinstallfunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/camlsinstallfunctions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -175,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658837990436</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added sanity check if WSL is already installed with a user different than epics">
+      <created>1666947108078</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1666947108078</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -194,7 +199,8 @@
     <MESSAGE value="Built new exe" />
     <MESSAGE value="Added password input to CAMELS" />
     <MESSAGE value="Added CCREATE_NO_WINDOW to all subprocess calls" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added CCREATE_NO_WINDOW to all subprocess calls" />
+    <MESSAGE value="Added sanity check if WSL is already installed with a user different than epics" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added sanity check if WSL is already installed with a user different than epics" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
