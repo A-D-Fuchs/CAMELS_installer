@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="Added sanity check if WSL is already installed with a user different than epics">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/camlsinstallfunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/camlsinstallfunctions.py" afterDir="false" />
+    <list default="true" id="9f2cfce2-0e64-4d0e-88e1-a1b38ea40f06" name="Changes" comment="Changed .bashrc writing from then &quot;open&quot; function to a subprocess call">
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/Analysis-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/EXE-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/PKG-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/PKG-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/PYZ-00.pyz" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/PYZ-00.pyz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/PYZ-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/PYZ-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/camels_installer.pkg" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/camels_installer.pkg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/warn-camels_installer.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/warn-camels_installer.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/camels_installer/xref-camels_installer.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/camels_installer/xref-camels_installer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/camels_installer.exe" beforeDir="false" afterPath="$PROJECT_DIR$/dist/camels_installer.exe" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,7 +187,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666947108078</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Changed .bashrc writing from then &quot;open&quot; function to a subprocess call">
+      <created>1667388135182</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1667388135182</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -200,7 +214,8 @@
     <MESSAGE value="Added password input to CAMELS" />
     <MESSAGE value="Added CCREATE_NO_WINDOW to all subprocess calls" />
     <MESSAGE value="Added sanity check if WSL is already installed with a user different than epics" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added sanity check if WSL is already installed with a user different than epics" />
+    <MESSAGE value="Changed .bashrc writing from then &quot;open&quot; function to a subprocess call" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed .bashrc writing from then &quot;open&quot; function to a subprocess call" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
