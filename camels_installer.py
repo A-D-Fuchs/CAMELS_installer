@@ -225,6 +225,3 @@ if __name__ == '__main__':
     ui = InstallerWindow()
     ui.show()
     app.exec_()
-
-command = "echo 'junker:124' `| sudo chpasswd;123"
-ret = subprocess.run("powershell", "wsl", f"{command}", shell=True)
