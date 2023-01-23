@@ -210,10 +210,13 @@ def full_sanity_check(camels_install_path, checkbox_install_wsl,
             pass
     if checkbox_install_pythonenv:
         if sanity_check_pyenv_installed(info_signal) == 0:
+            info_signal.emit('Installing pyenv')
             install_pyenv(info_signal)
+            info_signal.emit('Setting up python environment')
             setup_python_environment(camels_install_path,info_signal)
         else:
             info_signal.emit('Passed pyenv installed check')
+            info_signal.emit('Setting up python environment')
             setup_python_environment(camels_install_path,info_signal)
 
     sys.exit(0)

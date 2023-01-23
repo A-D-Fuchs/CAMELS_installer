@@ -666,23 +666,22 @@ def setup_python_environment(camels_install_path,info_signal):
                     "pyenv install 3.9.6"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, creationflags=subprocess.CREATE_NO_WINDOW,)
+    if '3.9.6' in ((subprocess.run(["powershell", "pyenv versions"],
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                          shell=True, creationflags=subprocess.CREATE_NO_WINDOW,)).stdout).decode('utf-8'):
+        info_signal.emit('Installed 3.9.6 successfully')
+    else:
+        info_signal.emit('Python 3.9.6 is not installed')
     info_signal.emit('Setting python 3.9.6 as the default global python in Powershell')
     subprocess.run(["powershell", "pyenv global 3.9.6"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, creationflags=subprocess.CREATE_NO_WINDOW,)
 
-    if '3.9.6' in (subprocess.run(["powershell", "pyenv versions"],
-                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                          shell=True, creationflags=subprocess.CREATE_NO_WINDOW,)).stdout:
-        info_signal.emit('Installed 3.9.6 successfully')
-    else:
-        info_signal.emit('Python 3.9.6 is not installed')
-
-    #info_signal.emit('Creating python virtual environment .desertenv')
+    info_signal.emit('Creating python virtual environment .desertenv')
     subprocess.run(["powershell", fr"cd {camels_install_path}; python -m venv .desertenv"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                    shell=True, creationflags=subprocess.CREATE_NO_WINDOW,)
-    #info_signal.emit('Installing the required packages into the virtual environment')
+    info_signal.emit('Installing the required packages into the virtual environment')
     subprocess.run(["powershell", fr"cd {camels_install_path}; ./.desertenv/Scripts/activate; "
                                   fr"pip install -r {camels_install_path}/requirements.txt"],
                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
