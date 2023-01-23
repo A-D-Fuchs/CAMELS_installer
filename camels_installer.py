@@ -51,9 +51,9 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowTitle('CAMELS Installer')
-        self.setWindowIcon(QIcon('./graphics/CAMELS.svg'))
+        self.setWindowIcon(QIcon('./CAMELS.svg'))
         image = QPixmap()
-        image.load('./graphics/CAMELS_Logo.png')
+        image.load('./CAMELS_Logo.png')
         self.image_label = QLabel()
         self.image_label.setPixmap(image)
         self.centralwidget.layout().addWidget(self.image_label, 0, 0, 4, 1)
@@ -120,8 +120,9 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
         if (((wsl_install_bool
              and sanity_check_wsl_enabled() != 0
              and sanity_check_ubuntu_installed() == 0) or
-                (epics_install_bool and sanity_check_epics_installed() == 0)) \
-                or sanity_check_ubuntu_user_exists() == 0) and not ubuntu_pwd:
+                (epics_install_bool and sanity_check_epics_installed() == 0))
+                or (sanity_check_ubuntu_user_exists() == 0) and not ubuntu_pwd
+                and epics_install_bool):
             self.get_pass()
             return
         self.groupBox_progress.setHidden(False)
