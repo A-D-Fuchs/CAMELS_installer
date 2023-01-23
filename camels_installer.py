@@ -121,8 +121,8 @@ class InstallerWindow(QMainWindow, Ui_InstallerWindow):
              and sanity_check_wsl_enabled() != 0
              and sanity_check_ubuntu_installed() == 0) or
                 (epics_install_bool and sanity_check_epics_installed() == 0))
-                or (sanity_check_ubuntu_user_exists() == 0) and not ubuntu_pwd
-                and epics_install_bool):
+                or (sanity_check_ubuntu_user_exists() == 0) 
+                and epics_install_bool) and not ubuntu_pwd:
             self.get_pass()
             return
         self.groupBox_progress.setHidden(False)
