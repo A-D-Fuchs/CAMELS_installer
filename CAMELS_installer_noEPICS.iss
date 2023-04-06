@@ -19,20 +19,41 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName=CAMELS
-LicenseFile=C:\Users\yh43epyd\Desktop\GPLv3_license.txt
+LicenseFile=D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS_installer\GPLv3_license.txt
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
-OutputBaseFilename=mysetup_CAMELS
+PrivilegesRequired=lowest
+OutputBaseFilename=setup_CAMELS
 SetupIconFile=D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\CAMELS\graphics\CAMELS.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-
+WizardImageFile=camels-vertical.bmp
+WizardSmallImageFile=camels-vertical_small.bmp
+; 'Types': What get displayed during the setup
+[Types]
+Name: "full";     Description: "Full installation of a python environment and CAMELS";
+Name: "python_env";      Description: "Only installs the correct python environment using pyenv";
+Name: "CAMELS_files"; Description: "Only installs the CAMELS files";
+; Components are used inside the script and can be composed of a set of 'Types'
+[Components]
+Name: "python_env";      Description: "Only installs the correct python environment using pyenv";   Types: full python_env
+Name: "CAMELS_files"; Description: "Only installs the CAMELS files";Types: full CAMELS_files
+[Tasks]
+Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Components: CAMELS_files
+Name: startmenu_add; Description: "Create a &start menu icon"; GroupDescription: "Additional icons:"; Components: CAMELS_files
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\CAMELS\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\instruments\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+;Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\CAMELS\*"; DestDir: "{app}\CAMELS"; Flags: recursesubdirs createallsubdirs; Components: python_env CAMELS_files
+;Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\instruments\*"; DestDir: "{app}\instruments"; Flags: recursesubdirs createallsubdirs; Components: python_env CAMELS_files
+;Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS_installer\git_portable\*"; DestDir: "{tmp}\git_portable"; Flags: recursesubdirs createallsubdirs; Components: full
+Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS_installer\run_script.ps1"; DestDir: "{app}"; Components: python_env CAMELS_files
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+[Icons] 
+Name: "{userdesktop}\CAMELS"; Filename: "{app}\MainApp_v2.py"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{group}\CAMELS"; Filename: "{app}\MainApp_v2.py"; WorkingDir: "{app}"; Tasks: startmenu_add
+[Run]
+;Filename: "powershell.exe"; \
+  Parameters: "-ExecutionPolicy Bypass -File ""{app}\run_script.ps1"" {app}";  WorkingDir: {app}; Flags: runhidden
 
