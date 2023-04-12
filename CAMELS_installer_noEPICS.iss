@@ -19,41 +19,47 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName=CAMELS
-LicenseFile=D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS_installer\GPLv3_license.txt
+LicenseFile=License\lgpl-3.0.txt
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=lowest
-OutputBaseFilename=setup_CAMELS
-SetupIconFile=D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\CAMELS\graphics\CAMELS.ico
+OutputBaseFilename=CAMELS_installer
+SetupIconFile=Images\CAMELS.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=camels-vertical.bmp
-WizardSmallImageFile=camels-vertical_small.bmp
+WizardImageFile=Images\camels-vertical.bmp
+WizardSmallImageFile=Images\camels-vertical_small.bmp
 ; 'Types': What get displayed during the setup
 [Types]
 Name: "full";     Description: "Full installation of a python environment and CAMELS";
-Name: "python_env";      Description: "Only installs the correct python environment using pyenv";
-Name: "CAMELS_files"; Description: "Only installs the CAMELS files";
+;Name: "python_env";      Description: "Only installs the correct python environment using pyenv";
+;Name: "CAMELS_files"; Description: "Only installs the CAMELS files";
 ; Components are used inside the script and can be composed of a set of 'Types'
 [Components]
-Name: "python_env";      Description: "Only installs the correct python environment using pyenv";   Types: full python_env
-Name: "CAMELS_files"; Description: "Only installs the CAMELS files";Types: full CAMELS_files
+Name: "python_env";      Description: "Only installs the correct python environment using pyenv";   Types: full
+Name: "CAMELS_files"; Description: "Only installs the CAMELS files";Types: full
 [Tasks]
 Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Components: CAMELS_files
 Name: startmenu_add; Description: "Create a &start menu icon"; GroupDescription: "Additional icons:"; Components: CAMELS_files
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-
+[Dirs]
+Name: "{localappdata}\CAMELS\Presets\Backup"
 [Files]
-;Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\CAMELS\*"; DestDir: "{app}\CAMELS"; Flags: recursesubdirs createallsubdirs; Components: python_env CAMELS_files
-;Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS\instruments\*"; DestDir: "{app}\instruments"; Flags: recursesubdirs createallsubdirs; Components: python_env CAMELS_files
-;Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS_installer\git_portable\*"; DestDir: "{tmp}\git_portable"; Flags: recursesubdirs createallsubdirs; Components: full
-Source: "D:\Fuchs\Promotion\FAIRmat\CAMELS\CAMELS_installer\run_script.ps1"; DestDir: "{app}"; Components: python_env CAMELS_files
+Source: "CAMELS.exe"; DestDir: "{app}"; Components: python_env CAMELS_files
+Source: "run\read_ini.bat"; DestDir: "{app}\run"; Components: python_env CAMELS_files
+Source: "Python_code\dist\setup_camels.exe"; DestDir: "{tmp}"; Components: python_env CAMELS_files
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 [Icons] 
-Name: "{userdesktop}\CAMELS"; Filename: "{app}\MainApp_v2.py"; WorkingDir: "{app}"; Tasks: desktopicon
-Name: "{group}\CAMELS"; Filename: "{app}\MainApp_v2.py"; WorkingDir: "{app}"; Tasks: startmenu_add
+Name: "{userdesktop}\CAMELS"; Filename: "{app}\CAMELS.exe"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{group}\CAMELS"; Filename: "{app}\CAMELS.exe"; WorkingDir: "{app}"; Tasks: startmenu_add
 [Run]
-;Filename: "powershell.exe"; \
-  Parameters: "-ExecutionPolicy Bypass -File ""{app}\run_script.ps1"" {app}";  WorkingDir: {app}; Flags: runhidden
-
+Filename: "{tmp}\setup_camels.exe"; \
+  Parameters: "{app} {tmp}";  WorkingDir: {app}; Flags: runhidden ; StatusMsg: "Installing the Python environment and CAMELS. This can take several minutes."
+[UninstallDelete]
+Type: files; Name: "{app}\run\CAMELS.ini"
+Type: files; Name: "{app}\.python-version"
+Type: filesandordirs; Name: "{app}\.desertenv"
+Type: dirifempty; Name: "{app}\run"
+Type: dirifempty; Name: "{app}"
