@@ -56,7 +56,25 @@ Name: "{userdesktop}\CAMELS"; Filename: "{app}\CAMELS.exe"; WorkingDir: "{app}";
 Name: "{group}\CAMELS"; Filename: "{app}\CAMELS.exe"; WorkingDir: "{app}"; Tasks: startmenu_add
 [Run]
 Filename: "{tmp}\setup_camels.exe"; \
-  Parameters: "{app} {tmp}";  WorkingDir: {app}; Flags: runhidden ; StatusMsg: "Installing the Python environment and CAMELS. This can take several minutes."
+  Parameters: "{app} {tmp}";  WorkingDir: {app}; Flags: runhidden ; StatusMsg: "Installing the Python environment and CAMELS. This can take several minutes."  ;BeforeInstall: SetMarqueeProgress(True);AfterInstall: SetMarqueeProgress(False);
+
+
+  
+[Code]
+
+procedure SetMarqueeProgress(Marquee: Boolean);
+begin
+  if Marquee then
+  begin
+    WizardForm.ProgressGauge.Style := npbstMarquee;
+  end
+    else
+  begin
+    WizardForm.ProgressGauge.Style := npbstNormal;
+  end;
+end;
+
+  
 [UninstallDelete]
 Type: files; Name: "{app}\run\CAMELS.ini"
 Type: files; Name: "{app}\.python-version"
