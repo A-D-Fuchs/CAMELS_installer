@@ -3,7 +3,7 @@
 
 #define MyAppName "CAMELS"
 #define MyAppVersion "0.1"
-#define MyAppPublisher "FAIRmat - NOMAD - J.A.Lehmeyer, A.D.Fuchs"
+#define MyAppPublisher "FAIRmat - NOMAD - J.A.F. Lehmeyer, A.D. Fuchs"
 #define MyAppURL "https://fau-lap.github.io/CAMELS/"
 
 [Setup]
@@ -17,7 +17,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={autopf}\{#MyAppName}
+DefaultDirName={userpf}\{#MyAppName}
 DefaultGroupName=CAMELS
 LicenseFile=License\lgpl-3.0.txt
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
@@ -56,7 +56,7 @@ Name: "{userdesktop}\CAMELS"; Filename: "{app}\CAMELS.exe"; WorkingDir: "{app}";
 Name: "{group}\CAMELS"; Filename: "{app}\CAMELS.exe"; WorkingDir: "{app}"; Tasks: startmenu_add
 [Run]
 Filename: "{tmp}\setup_camels.exe"; \
-  Parameters: "{app} {tmp}";  WorkingDir: {app}; Flags: runhidden ; StatusMsg: "Installing the Python environment and CAMELS. This can take several minutes."  ;BeforeInstall: SetMarqueeProgress(True);AfterInstall: SetMarqueeProgress(False);
+  Parameters: "{app} {tmp}";  WorkingDir: {app}; Flags: runhidden ; StatusMsg: "Installing the python environment and CAMELS. This can take several minutes."  ;BeforeInstall: SetMarqueeProgress(True);AfterInstall: SetMarqueeProgress(False);
 
 
   
