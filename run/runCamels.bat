@@ -26,16 +26,14 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCuDJH+R90ojFCtGQwmNKGK1CIk6ycHJ4uuTnm48eccTS7P4+5mrDNMs40v3YZch2n9IpNkZAid7Xz+OQjx6rHZH1g==
+::Zh4grVQjdCuDJH+R90ojFCtGQwmNKGK1CIk6ycHJ4uuTnm48eccTS7P4+5mrDNMs40v3YZch2n9IpNkZAid2UT+KSkIXiENnmlfLMt+Z0w==
 ::YB416Ek+ZG8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
 @echo off
 SETLOCAL
-for /f %%i in ('.\run\read_ini.bat /i python_exe_path .\run\CAMELS.ini') do set python_exe=%%i
-for /f %%i in ('.\run\read_ini.bat /i camels_start_path .\run\CAMELS.ini') do set camels_start_path=%%i
-echo %python_exe%
-echo %camels_start_path%
+for /f %%i in ('.\run\read_ini.bat /i python_exe_path .\run\NOMAD-CAMELS.ini') do set python_exe=%%i
+for /f %%i in ('.\run\read_ini.bat /i camels_start_path .\run\NOMAD-CAMELS.ini') do set camels_start_path=%%i
 start %python_exe% %camels_start_path%
 ENDLOCAL
