@@ -105,7 +105,7 @@ def pip_install_camels(nomad_camels_install_path):
                                      r'.\.desertenv\Scripts\activate;'
                                      f'pip install '
                                      'git+https://github.com/FAU-LAP/CAMELS.git'
-                                     '@development'],
+                                     '@main'],
                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                       creationflags=subprocess.CREATE_NO_WINDOW, ).returncode:
         raise OSError(f'Failed to pip install NOMAD-CAMELS')
