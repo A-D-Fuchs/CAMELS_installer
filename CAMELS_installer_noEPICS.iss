@@ -45,7 +45,7 @@ Name: startmenu_add; Description: "Create a &start menu icon"; GroupDescription:
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 [Dirs]
-Name: "{localappdata}\NOMAD-CAMELS\Presets\Backup"
+Name: "{localappdata}\nomad_camels\Presets\Backup"
 [Files]
 Source: "NOMAD-CAMELS.exe"; DestDir: "{app}"; Components: python_env CAMELS_files
 Source: "run\read_ini.bat"; DestDir: "{app}\run"; Components: python_env CAMELS_files
