@@ -104,8 +104,7 @@ def pip_install_camels(nomad_camels_install_path):
     if subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", f'cd {nomad_camels_install_path};'
                                      r'.\.desertenv\Scripts\activate;'
                                      f'pip install '
-                                     'git+https://github.com/FAU-LAP/CAMELS.git'
-                                     '@development'],
+                                     '--no-cache-dir --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple nomad-camels'],
                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                       creationflags=subprocess.CREATE_NO_WINDOW, ).returncode:
         raise OSError(f'Failed to pip install NOMAD-CAMELS')
@@ -117,9 +116,9 @@ def create_ini_file(nomad_camels_install_path=None):
         python_exe_path = os.path.join(nomad_camels_install_path,
                                        r'.desertenv\Scripts\pythonw.exe')
     if os.path.exists(os.path.join(nomad_camels_install_path,
-                                   r'.desertenv\Lib\site-packages\CAMELS\CAMELS_start.py')):
+                                   r'.desertenv\Lib\site-packages\nomad_camels\CAMELS_start.py')):
         camels_start_path = os.path.join(nomad_camels_install_path,
-                                         r'.desertenv\Lib\site-packages\CAMELS\CAMELS_start.py')
+                                         r'.desertenv\Lib\site-packages\nomad_camels\CAMELS_start.py')
     if subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", f'cd {nomad_camels_install_path};'
                                   fr'New-Item -Path .\run\ '
                                   '-Name "NOMAD-CAMELS.ini" -ItemType "file" -Value '
