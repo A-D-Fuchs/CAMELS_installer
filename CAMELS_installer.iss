@@ -33,8 +33,8 @@ WizardSmallImageFile=Images\camels-vertical_small.bmp
 ; 'Types': What get displayed during the setup
 [Types]
 Name: "full";     Description: "Full installation of a python environment and NOMAD-CAMELS";
-;Name: "python_env";      Description: "Only installs the correct python environment using pyenv";
-;Name: "CAMELS_files"; Description: "Only installs the CAMELS files";
+;Name: "python_env";      Description: "Installs the correct python environment using pyenv";
+;Name: "CAMELS_files"; Description: "Installs the CAMELS files";
 ; Components are used inside the script and can be composed of a set of 'Types'
 [Components]
 Name: "python_env";      Description: "Only installs the correct python environment using pyenv";   Types: full
