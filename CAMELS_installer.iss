@@ -47,7 +47,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Dirs]
 Name: "{localappdata}\nomad_camels\Presets\Backup"
 [Files]
-Source: "NOMAD-CAMELS.exe"; DestDir: "{app}"; Components: python_env CAMELS_files
+Source: "run\NOMAD-CAMELS.exe"; DestDir: "{app}"; Components: python_env CAMELS_files
 Source: "run\read_ini.bat"; DestDir: "{app}\run"; Components: python_env CAMELS_files
 Source: "Python_code\dist\setup_camels.exe"; DestDir: "{tmp}"; Components: python_env CAMELS_files
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
