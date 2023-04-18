@@ -4,7 +4,7 @@
 #define MyAppName "NOMAD-CAMELS"
 #define MyAppVersion "0.1"
 #define MyAppPublisher "FAIRmat - NOMAD - Humboldt-Universität zu Berlin"
-#define MyAppURL "https://fau-lap.github.io/CAMELS/"
+#define MyAppURL "https://fau-lap.github.io/NOMAD-CAMELS/"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
