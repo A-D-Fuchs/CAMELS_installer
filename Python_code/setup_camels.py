@@ -133,13 +133,13 @@ def create_ini_file(nomad_camels_install_path=None):
 def main_setup_python_environment(nomad_camels_install_path=None,
                                   temp_path=None):
     """
-    Installs the correct python version (3.9.6) using pyenv and then sets up the environment
+    Installs the correct python version (3.11.3) using pyenv and then sets up the environment
     '.desertenv' in the NOMAD-CAMELS folder created by the Inno Setup installer.
 
     Returns
     -------
     """
-    python_version = '3.9.6'
+    python_version = '3.11.3'
     if check_if_pyenv_installed():
         print('pyenv is already installed')
         pyenv_version = check_pyenv_version(
