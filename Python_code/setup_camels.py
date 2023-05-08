@@ -5,16 +5,19 @@ import subprocess
 import sys
 
 
-def check_if_pyenv_installed():
-    """
-    Checks to see if pyenv is already installed.
+def check_if_pyenv_installed() -> bool:
+    """Checks to see if pyenv is already installed.
     Pyenv is used to set up a clean python environemnt for CAMELS.
 
+    Parameters
+    ----------
 
     Returns
     -------
-    True: if pyenv is installed\n
-    False: if pyenv is not installed
+    bool
+        True if pyenv is already installed, False if it is not.
+
+    
     """
     if (subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", "pyenv"],
                        stderr=subprocess.PIPE,
@@ -29,12 +32,26 @@ def check_if_pyenv_installed():
 
 
 def run_pyenv_install(temp_path):
-    """
-    Installs pyenv using a single powershell script.
+    """Installs pyenv using the official GitHub powershell script.
     Uninstall with following command in command line: 'install-pyenv-win.ps1 -uninstall'
 
-    :param temp_path: path to a temporary folder in {tmp} created by Inno Setup when installing
-    :return: None
+    Parameters
+    ----------
+    temp_path :
+        path to a temporary folder in {tmp} created by Inno Setup when installing.
+        This value is passed to this python script (and function) when running the InnoSetup
+        installer exe.
+
+    Returns
+    -------
+    None
+
+    Raises
+    -------
+    OSError
+        If it fails to run the installation script for pyenv.
+
+    
     """
     if subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", f'cd {temp_path};Invoke-WebRequest -UseBasicParsing -Uri '
                                      '"https://raw.githubusercontent.com/pyenv-win/pyenv'
@@ -49,6 +66,27 @@ def run_pyenv_install(temp_path):
 
 
 def check_pyenv_version(folder_path, ):
+    """Executes `pyenv --version` in the installation path to check if pyenv installed properly
+    and returns the pyenv version.
+
+    Parameters
+    ----------
+    folder_path :
+        Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+        created with InnoSetup.
+        
+
+    Returns
+    -------
+    string
+        Contains the captured pyenv version for example `3.11.1`
+    
+    Raises
+    -------
+    OSError
+        If it fails to run the pyenv --version command or if the version can't be read from the
+        stdout via re.search.
+    """
     ret = subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", f'cd {folder_path};pyenv --version'],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                          creationflags=subprocess.CREATE_NO_WINDOW, )
@@ -65,6 +103,26 @@ def check_pyenv_version(folder_path, ):
 
 
 def install_python_version(python_version):
+    """
+
+    Parameters
+    ----------
+    python_version : :obj:`str`
+        The python version that should be installed. Is hard coded in the
+        `main_setup_python_environment` function.
+
+        
+
+    Returns
+    -------
+    None
+
+    Raises
+    -------
+    OSError
+        If it fails to run the `pyenv install` command.
+    
+    """
     if subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", f'pyenv install {python_version}'],
                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                       creationflags=subprocess.CREATE_NO_WINDOW, ).returncode:
@@ -72,6 +130,23 @@ def install_python_version(python_version):
 
 
 def set_local_python_version(nomad_camels_install_path, python_version):
+    """
+
+    Parameters
+    ----------
+    nomad_camels_install_path :
+        Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+        created with InnoSetup.
+    python_version : :obj:`str`
+        The python version that should be installed. Is hard coded in the
+        `main_setup_python_environment` function.
+        
+
+    Returns
+    -------
+    None
+    
+    """
     if os.path.isdir(nomad_camels_install_path):
         pass
     else:
@@ -85,6 +160,25 @@ def set_local_python_version(nomad_camels_install_path, python_version):
 
 
 def create_desertenv(nomad_camels_install_path):
+    """
+
+    Parameters
+    ----------
+    nomad_camels_install_path :
+        Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+        created with InnoSetup.
+        
+
+    Returns
+    -------
+    None
+
+    Raises
+    -------
+    OSError
+        If it fails to run the `pyenv which python` command or fails to create a virtual
+        environment.
+    """
     ret = subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", f'cd {nomad_camels_install_path};'
                                         'pyenv which python'],
                          stdout=subprocess.PIPE,
@@ -101,6 +195,24 @@ def create_desertenv(nomad_camels_install_path):
 
 
 def pip_install_camels(nomad_camels_install_path):
+    """
+
+    Parameters
+    ----------
+    nomad_camels_install_path :
+        Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+        created with InnoSetup.
+        
+
+    Returns
+    -------
+    None
+
+    Raises
+    -------
+    OSError
+        If it fails to run the `pip install nomad-camels` command.
+    """
     if subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", f'cd {nomad_camels_install_path};'
                                      r'.\.desertenv\Scripts\activate;'
                                      f'pip install '
@@ -111,6 +223,36 @@ def pip_install_camels(nomad_camels_install_path):
 
 
 def create_ini_file(nomad_camels_install_path=None):
+    """Creates a .ini file with the python exe path and the camels start path.
+    This .ini file is used by the NOMAD-CAMELS.exe which is simply a wrapped .bat file
+    which runs these commands
+
+    ```
+    @echo off
+    SETLOCAL
+    for /f %%i in ('.\run\read_ini.bat /i python_exe_path .\run\NOMAD-CAMELS.ini') do set python_exe=%%i
+    for /f %%i in ('.\run\read_ini.bat /i camels_start_path .\run\NOMAD-CAMELS.ini') do set camels_start_path=%%i
+    start %python_exe% %camels_start_path%
+    ENDLOCAL
+    ```
+
+    Parameters
+    ----------
+    nomad_camels_install_path : optional
+        Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+        created with InnoSetup.
+
+    Returns
+    -------
+    None
+
+    Raises
+    -------
+    OSError
+        If it fails to create the .ini file.
+
+    
+    """
     if os.path.exists(
             os.path.join(nomad_camels_install_path, r'.desertenv\Scripts\pythonw.exe')):
         python_exe_path = os.path.join(nomad_camels_install_path,
@@ -132,12 +274,24 @@ def create_ini_file(nomad_camels_install_path=None):
 
 def main_setup_python_environment(nomad_camels_install_path=None,
                                   temp_path=None):
-    """
-    Installs the correct python version (3.11.3) using pyenv and then sets up the environment
-    '.desertenv' in the NOMAD-CAMELS folder created by the Inno Setup installer.
+    """Installs the correct python version using pyenv and then sets up the python environment.
+        The environment is installed into '.desertenv' in the NOMAD-CAMELS folder given by
+        `nomad_camels_install_path` which is created by the Inno Setup installer.
+
+    Parameters
+    ----------
+    nomad_camels_install_path : optional
+        Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+        created with InnoSetup.
+    temp_path : optional
+        path to a temporary folder in {tmp} created by Inno Setup when installing.
+        This value is passed to this python script (and function) when running the InnoSetup
+        installer exe.
 
     Returns
     -------
+    None
+
     """
     python_version = '3.11.3'
     if check_if_pyenv_installed():
