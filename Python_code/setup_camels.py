@@ -224,35 +224,32 @@ def pip_install_camels(nomad_camels_install_path):
 
 def create_ini_file(nomad_camels_install_path=None):
     """Creates a .ini file with the python exe path and the camels start path.
-    This .ini file is used by the NOMAD-CAMELS.exe which is simply a wrapped .bat file
-    which runs these commands
+This .ini file is used by the NOMAD-CAMELS.exe which is simply a wrapped .bat file
+which runs these commands::
 
-    ```
     @echo off
     SETLOCAL
-    for /f %%i in ('.\run\read_ini.bat /i python_exe_path .\run\NOMAD-CAMELS.ini') do set python_exe=%%i
-    for /f %%i in ('.\run\read_ini.bat /i camels_start_path .\run\NOMAD-CAMELS.ini') do set camels_start_path=%%i
+    for /f %%i in ('.\\run\\read_ini.bat /i python_exe_path .\\run\\NOMAD-CAMELS.ini') do set python_exe=%%i
+    for /f %%i in ('.\\run\\read_ini.bat /i camels_start_path .\\run\\NOMAD-CAMELS.ini') do set camels_start_path=%%i
     start %python_exe% %camels_start_path%
     ENDLOCAL
-    ```
 
-    Parameters
-    ----------
-    nomad_camels_install_path : optional
-        Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
-        created with InnoSetup.
+Parameters
+----------
+nomad_camels_install_path : optional
+    Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+    created with InnoSetup.
 
-    Returns
-    -------
-    None
+Returns
+-------
+None
 
-    Raises
-    -------
-    OSError
-        If it fails to create the .ini file.
-
-    
+Raises
+-------
+OSError
+    If it fails to create the .ini file.
     """
+
     if os.path.exists(
             os.path.join(nomad_camels_install_path, r'.desertenv\Scripts\pythonw.exe')):
         python_exe_path = os.path.join(nomad_camels_install_path,
