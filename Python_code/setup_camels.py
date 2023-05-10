@@ -234,11 +234,12 @@ which runs these commands::
     start %python_exe% %camels_start_path%
     ENDLOCAL
 
+
 Parameters
 ----------
 nomad_camels_install_path : optional
     Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
-    created with InnoSetup.
+    created with Inno Setup.
 
 Returns
 -------
