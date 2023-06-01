@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>setup_camels module &mdash; test 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">setup_camels module</a><ul>
+<li><a class="reference internal" href="#setup_camels.check_if_pyenv_installed"><code class="docutils literal notranslate"><span class="pre">check_if_pyenv_installed()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.check_pyenv_version"><code class="docutils literal notranslate"><span class="pre">check_pyenv_version()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.create_desertenv"><code class="docutils literal notranslate"><span class="pre">create_desertenv()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.create_ini_file"><code class="docutils literal notranslate"><span class="pre">create_ini_file()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.install_python_version"><code class="docutils literal notranslate"><span class="pre">install_python_version()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.main_setup_python_environment"><code class="docutils literal notranslate"><span class="pre">main_setup_python_environment()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.pip_install_camels"><code class="docutils literal notranslate"><span class="pre">pip_install_camels()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.run_pyenv_install"><code class="docutils literal notranslate"><span class="pre">run_pyenv_install()</span></code></a></li>
+<li><a class="reference internal" href="#setup_camels.set_local_python_version"><code class="docutils literal notranslate"><span class="pre">set_local_python_version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">setup_camels module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/setup_camels.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-setup_camels">
+<span id="setup-camels-module"></span><h1>setup_camels module<a class="headerlink" href="#module-setup_camels" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.check_if_pyenv_installed">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">check_if_pyenv_installed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#setup_camels.check_if_pyenv_installed" title="Permalink to this definition"></a></dt>
+<dd><p>Checks to see if pyenv is already installed.
+Pyenv is used to set up a clean python environemnt for CAMELS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if pyenv is already installed, False if it is not.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.check_pyenv_version">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">check_pyenv_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.check_pyenv_version" title="Permalink to this definition"></a></dt>
+<dd><p>Executes <cite>pyenv –version</cite> in the installation path to check if pyenv installed properly
+and returns the pyenv version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>folder_path</strong> – Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+created with InnoSetup.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Contains the captured pyenv version for example <cite>3.11.1</cite></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>OSError</strong> – If it fails to run the pyenv –version command or if the version can’t be read from the
+    stdout via re.search.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.create_desertenv">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">create_desertenv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nomad_camels_install_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.create_desertenv" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nomad_camels_install_path</strong> – Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+created with InnoSetup.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OSError</strong> – If it fails to run the <cite>pyenv which python</cite> command or fails to create a virtual
+    environment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.create_ini_file">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">create_ini_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nomad_camels_install_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.create_ini_file" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a .ini file with the python exe path and the camels start path.
+This .ini file is used by the NOMAD-CAMELS.exe which is simply a wrapped .bat file
+which runs these commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@echo</span> <span class="n">off</span>
+<span class="n">SETLOCAL</span>
+<span class="k">for</span> <span class="o">/</span><span class="n">f</span> <span class="o">%%</span><span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;.</span><span class="se">\r</span><span class="s1">un</span><span class="se">\r</span><span class="s1">ead_ini.bat /i python_exe_path .</span><span class="se">\r</span><span class="s1">un\NOMAD-CAMELS.ini&#39;</span><span class="p">)</span> <span class="n">do</span> <span class="nb">set</span> <span class="n">python_exe</span><span class="o">=%%</span><span class="n">i</span>
+<span class="k">for</span> <span class="o">/</span><span class="n">f</span> <span class="o">%%</span><span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;.</span><span class="se">\r</span><span class="s1">un</span><span class="se">\r</span><span class="s1">ead_ini.bat /i camels_start_path .</span><span class="se">\r</span><span class="s1">un\NOMAD-CAMELS.ini&#39;</span><span class="p">)</span> <span class="n">do</span> <span class="nb">set</span> <span class="n">camels_start_path</span><span class="o">=%%</span><span class="n">i</span>
+<span class="n">start</span> <span class="o">%</span><span class="n">python_exe</span><span class="o">%</span> <span class="o">%</span><span class="n">camels_start_path</span><span class="o">%</span>
+<span class="n">ENDLOCAL</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nomad_camels_install_path</strong> (<em>optional</em>) – Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+created with InnoSetup.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OSError</strong> – If it fails to create the .ini file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.install_python_version">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">install_python_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">python_version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.install_python_version" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>python_version</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>) – The python version that should be installed. Is hard coded in the
+<cite>main_setup_python_environment</cite> function.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OSError</strong> – If it fails to run the <cite>pyenv install</cite> command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.main_setup_python_environment">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">main_setup_python_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nomad_camels_install_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.main_setup_python_environment" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Installs the correct python version using pyenv and then sets up the python environment.</dt><dd><p>The environment is installed into ‘.desertenv’ in the NOMAD-CAMELS folder given by
+<cite>nomad_camels_install_path</cite> which is created by the Inno Setup installer.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nomad_camels_install_path</strong> (<em>optional</em>) – Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+created with InnoSetup.</p></li>
+<li><p><strong>temp_path</strong> (<em>optional</em>) – path to a temporary folder in {tmp} created by Inno Setup when installing.
+This value is passed to this python script (and function) when running the InnoSetup
+installer exe.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.pip_install_camels">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">pip_install_camels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nomad_camels_install_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.pip_install_camels" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nomad_camels_install_path</strong> – Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+created with InnoSetup.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OSError</strong> – If it fails to run the <cite>pip install nomad-camels</cite> command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.run_pyenv_install">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">run_pyenv_install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.run_pyenv_install" title="Permalink to this definition"></a></dt>
+<dd><p>Installs pyenv using the official GitHub powershell script.
+Uninstall with following command in command line: ‘install-pyenv-win.ps1 -uninstall’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>temp_path</strong> – path to a temporary folder in {tmp} created by Inno Setup when installing.
+This value is passed to this python script (and function) when running the InnoSetup
+installer exe.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OSError</strong> – If it fails to run the installation script for pyenv.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="setup_camels.set_local_python_version">
+<span class="sig-prename descclassname"><span class="pre">setup_camels.</span></span><span class="sig-name descname"><span class="pre">set_local_python_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nomad_camels_install_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">python_version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setup_camels.set_local_python_version" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nomad_camels_install_path</strong> – Path where NOMAD-CAMELS should be installed. This is set by the installation wizard
+created with InnoSetup.</p></li>
+<li><p><strong>python_version</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>) – The python version that should be installed. Is hard coded in the
+<cite>main_setup_python_environment</cite> function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, af.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
