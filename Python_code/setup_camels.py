@@ -304,13 +304,11 @@ def main_setup_python_environment(nomad_camels_install_path=None,
     python_version = '3.11.3'
     if check_if_pyenv_installed():
         print('pyenv is already installed')
-        pyenv_version = check_pyenv_version(
-            nomad_camels_install_path)  # more for debugging purposes
+        # pyenv_version = check_pyenv_version()  # more for debugging purposes
     else:
         print('pyenv not installed')
         run_pyenv_install(temp_path)
-        pyenv_version = check_pyenv_version(
-            nomad_camels_install_path)  # more for debugging purposes
+        # pyenv_version = check_pyenv_version()  # more for debugging purposes
     print('install_python_version')
     install_python_version(python_version)
     print('set_local_python_version')
