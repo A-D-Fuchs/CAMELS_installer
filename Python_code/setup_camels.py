@@ -227,7 +227,7 @@ def pip_install_camels(nomad_camels_install_path):
             ["powershell", "-ExecutionPolicy", "Bypass", f'cd {nomad_camels_install_path};'
                                                          r'.\.desertenv\Scripts\activate;'
                                                          f'pip install '
-                                                         '--no-cache-dir --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple nomad-camels'],
+                                                         '--no-cache-dir nomad-camels'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             creationflags=subprocess.CREATE_NO_WINDOW, ).returncode:
         raise OSError(f'Failed to pip install NOMAD-CAMELS')
